@@ -24,16 +24,25 @@ export class RedirectLink extends BaseEntity implements RedirectLinkInterface {
   @Column()
   source: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   id: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   redirect_link: string;
 
   @Column({
     default: () => 'CURRENT_TIMESTAMP',
   })
   created_at: Date;
+
+  @Column({
+    default: false,
+  })
+  deleted: boolean;
 
   @ManyToOne((type) => User, (entity) => entity.redirect_links)
   user_id: User;
@@ -44,6 +53,10 @@ export class RedirectLink extends BaseEntity implements RedirectLinkInterface {
   @BeforeInsert()
   @BeforeUpdate()
   generateRedirectLink(): void {
-    this.redirect_link = `localhost:3000/${this.id}`;
+    if (this.id) {
+      this.redirect_link = `localhost:3000/${this.id}`;
+    } else {
+      this.redirect_link = null;
+    }
   }
 }

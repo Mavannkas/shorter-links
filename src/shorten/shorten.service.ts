@@ -1,18 +1,21 @@
 import {
   BadRequestException,
+  ForbiddenException,
   ImATeapotException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import {
   createNewRedirectResponse,
+  DeleteRedirectLinkResponse,
+  RedirectLinkPageResponse,
   RedirectLinkResponse,
 } from 'src/interfaces/redirect-link';
 import { generateRandomString } from 'src/utils/generate-random-string';
 import { CreateNewRedirectLinkDto } from './dto/create-new-redirect-link.dto';
 import { RedirectLink } from './entity/redirect-link.entity';
 import axios from 'axios';
-import { UpdateRedirectLinkSourceDto } from './dto/update-redirect-link.dto';
+import { UpdateRedirectLinkDto } from './dto/update-redirect-link.dto';
 
 @Injectable()
 export class ShortenService {
@@ -46,7 +49,7 @@ export class ShortenService {
 
   async checkCustomID(id: string) {
     if (await this.checkIsIdExists(id)) {
-      throw new BadRequestException('this customID is exists now');
+      throw new ForbiddenException('this customID is exists now');
     }
 
     return id;
@@ -74,8 +77,28 @@ export class ShortenService {
     try {
       await axios.get(source);
     } catch (err) {
-      throw new BadRequestException('Source is invalid or not exists');
+      throw new ForbiddenException('Source is invalid or not exists');
     }
+  }
+
+  async getRedirectLinkPage(
+    page: number,
+    limit: number,
+  ): Promise<RedirectLinkPageResponse> {
+    if (page <= 0) throw new BadRequestException('Page must be positive');
+    
+    const [items, count] = await RedirectLink.findAndCount({
+      skip: limit * (page - 1),
+      take: limit,
+    });
+
+    const lastPage = Math.ceil(count / limit);
+
+    return {
+      items: items.map(this.prepareResponseData),
+      page,
+      lastPage,
+    };
   }
 
   async getRedirectLink(id: string): Promise<RedirectLinkResponse> {
@@ -83,34 +106,54 @@ export class ShortenService {
     return this.prepareResponseData(redirectLink);
   }
 
-  // async updateRedirectLink(
-  //   id: string,
-  //   updateData: UpdateRedirectLinkSourceDto,
-  // ): Promise<RedirectLinkResponse> {
-  //   const redirectLink = await this.getRedirectById(id);
-  // }
+  async updateRedirectLink(
+    id: string,
+    updateData: UpdateRedirectLinkDto,
+  ): Promise<RedirectLinkResponse> {
+    await this.checkUpdateData(updateData);
 
-  // async updateRedirectLinkCustomId(
-  //   id: string,
-  //   updateData: UpdateRedirectLinkSourceDto,
-  // ): Promise<RedirectLinkResponse> {
-  //   const redirectLink = await this.getRedirectById(id);
-  // }
+    const redirectLink = await this.updateRedirectById(id, updateData);
 
-  // async updateRedirectLinkSource(
-  //   id: string,
-  //   updateData: UpdateRedirectLinkSourceDto,
-  // ): Promise<RedirectLinkResponse> {
-  //   const redirectLink = await this.getRedirectById(id);
-  // }
+    await redirectLink.save();
 
-  // async deleteRedirectLink(id: string): Promise<RedirectLinkResponse> {
-  //   const redirectLink = await this.getRedirectById(id);
-  // }
+    return this.prepareResponseData(redirectLink);
+  }
+
+  async checkUpdateData({
+    source = undefined,
+    customID = undefined,
+  }): Promise<void> {
+    if (source) await this.checkIfSourceExists(source);
+    if (customID) await this.checkCustomID(customID);
+  }
+
+  async updateRedirectById(
+    id: string,
+    { source = undefined, customID = undefined },
+  ): Promise<RedirectLink> {
+    const redirectLink = await this.getRedirectById(id);
+    if (source) redirectLink.source = source;
+    if (customID) redirectLink.id = customID;
+    return redirectLink;
+  }
+
+  async deleteRedirectLink(id: string): Promise<DeleteRedirectLinkResponse> {
+    const redirectLink = await this.getRedirectById(id);
+    redirectLink.id = null;
+    redirectLink.deleted = true;
+
+    await redirectLink.save();
+    return {
+      ok: '1',
+    };
+  }
 
   async getRedirectById(id: string): Promise<RedirectLink> {
     try {
-      return await RedirectLink.findOneOrFail(id);
+      return await RedirectLink.findOneOrFail({
+        redirect_link_id: id,
+        deleted: false,
+      });
     } catch (error) {
       throw new NotFoundException('This redirect link not exists');
     }

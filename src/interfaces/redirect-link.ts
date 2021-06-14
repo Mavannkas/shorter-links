@@ -22,3 +22,13 @@ export interface RedirectLinkResponse {
   source: string;
   created_at: Date;
 }
+
+export interface RedirectLinkPageResponse {
+  items: RedirectLinkResponse[];
+  page: number;
+  lastPage: number;
+}
+
+export interface DeleteRedirectLinkResponse {
+  ok: string;
+}

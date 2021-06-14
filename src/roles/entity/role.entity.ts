@@ -18,6 +18,11 @@ export class Role extends BaseEntity implements RoleInterface {
   })
   name: string;
 
+  @Column({
+    default: false,
+  })
+  deleted: boolean;
+
   @ManyToMany((type) => User, (entity) => entity.roles)
   users: User[];
 }
