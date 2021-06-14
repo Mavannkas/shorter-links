@@ -12,3 +12,4 @@ export interface UserInterface {
   roles: Role[];
   redirect_links: RedirectLink[];
 }
+

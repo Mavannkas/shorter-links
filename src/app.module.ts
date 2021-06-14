@@ -6,6 +6,8 @@ import { ShortenModule } from './shorten/shorten.module';
 import { UserModule } from './user/user.module';
 import { StatsModule } from './stats/stats.module';
 import { RolesModule } from './roles/roles.module';
+import { AuthModule } from './auth/auth.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { RolesModule } from './roles/roles.module';
     forwardRef(() => StatsModule),
     UserModule,
     RolesModule,
+    AuthModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
