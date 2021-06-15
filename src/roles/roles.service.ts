@@ -1,6 +1,13 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  forwardRef,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
+import { AdminService } from 'src/admin/admin.service';
 import {
   DeleteRoleResponse,
+  RoleExtendedResponse,
   RoleResponse,
   RolesListResponse,
 } from 'src/interfaces/role';
@@ -9,6 +16,11 @@ import { Role } from './entity/role.entity';
 
 @Injectable()
 export class RolesService {
+  constructor(
+    @Inject(forwardRef(() => AdminService))
+    private adminService: AdminService,
+  ) {}
+
   async getRoles(): Promise<RolesListResponse> {
     return await (
       await Role.find({
@@ -46,8 +58,26 @@ export class RolesService {
   }
 
   async getRoleByID(id: string): Promise<Role> {
+    const role = await Role.findOne(
+      {
+        role_id: id,
+        deleted: false,
+      },
+      {
+        relations: ['users'],
+      },
+    );
+
+    if (!role) {
+      throw new ForbiddenException('This role not exists');
+    }
+
+    return role;
+  }
+
+  async getRoleByName(name: string): Promise<Role> {
     const role = await Role.findOne({
-      role_id: id,
+      name,
       deleted: false,
     });
 
@@ -74,6 +104,14 @@ export class RolesService {
     return {
       role_id,
       name,
+    };
+  }
+
+  prepareExtendedRoleResponse({ name, role_id, users }): RoleExtendedResponse {
+    return {
+      role_id,
+      name,
+      users: users.map(this.adminService.filterUserResponse),
     };
   }
 }

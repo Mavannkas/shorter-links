@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import {
   DeleteRoleResponse,
+  RoleExtendedResponse,
   RoleResponse,
   RolesListResponse,
 } from 'src/interfaces/role';
@@ -28,6 +29,15 @@ export class RolesController {
   @Post('')
   addRole(@Body() addData: AddRoleDto): Promise<RoleResponse> {
     return this.rolesService.addRole(addData);
+  }
+
+  @Get(':id')
+  async getRole(
+    @Param('id', new ParseUUIDPipe()) id: string,
+  ): Promise<RoleExtendedResponse> {
+    return this.rolesService.prepareExtendedRoleResponse(
+      await this.rolesService.getRoleByID(id),
+    );
   }
 
   @Patch(':id')

@@ -17,6 +17,11 @@ export interface RoleResponse {
   role_id: string;
   name: string;
 }
+export interface RoleExtendedResponse {
+  role_id: string;
+  name: string;
+  users: User[];
+}
 
 export type RolesListResponse = RoleResponse[];
 

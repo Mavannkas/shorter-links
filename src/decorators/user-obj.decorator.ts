@@ -3,6 +3,6 @@ import { executionAsyncId } from 'async_hooks';
 
 export const UserObj = createParamDecorator(
   (data, context: ExecutionContext) => {
-    return context.switchToHttp().getRequest().user.user;
+    return context.switchToHttp().getRequest().user?.user;
   },
 );
