@@ -1,6 +1,8 @@
+import { Token } from 'src/auth/entity/token.entity';
 import { UserInterface } from 'src/interfaces/user';
-import { Role } from 'src/roles/entity/role.entity';
+
 import { RedirectLink } from 'src/shorten/entity/redirect-link.entity';
+import { Role } from 'src/roles/entity/role.entity';
 import {
   BaseEntity,
   Column,
@@ -59,4 +61,7 @@ export class User extends BaseEntity implements UserInterface {
 
   @OneToMany((type) => RedirectLink, (entity) => entity.user_id)
   redirect_links: RedirectLink[];
+
+  @OneToMany((type) => Token, (entity) => entity.user_id)
+  tokens: Token[];
 }

@@ -15,7 +15,14 @@ import { MailService } from 'src/mail/mail.service';
 import { User } from 'src/user/entity/user.entity';
 import { UserService } from 'src/user/user.service';
 import { hashPassword, hashRandom } from 'src/utils/hash';
+import { AuthLoginDto } from './dto/auth.login.dto';
 import { registerUserDto } from './dto/register-user.dto';
+import { Response } from 'express';
+import { v4 as uuid } from 'uuid';
+import { sign } from 'jsonwebtoken';
+import { JwtPayload } from './jwt.strategy';
+import { Token } from './entity/token.entity';
+import { StatsService } from 'src/stats/stats.service';
 
 @Injectable()
 export class AuthService {
@@ -24,6 +31,8 @@ export class AuthService {
     private userService: UserService,
     @Inject(forwardRef(() => MailService))
     private mailService: MailService,
+    @Inject(forwardRef(() => StatsService))
+    private statsService: StatsService,
   ) {}
 
   async registerUser(registerData: registerUserDto): Promise<NewUserResponse> {
@@ -42,8 +51,7 @@ export class AuthService {
 
       return this.prepareUserResponse(user);
     } catch (err) {
-      console.log(err);
-      throw new InternalServerErrorException('Registration failed');
+      throw new ForbiddenException('Registration failed');
     }
   }
 
@@ -53,6 +61,7 @@ export class AuthService {
       url: `http://localhost:3000/main/auth/verify/${activation_hash}`,
     });
   }
+
   prepareUserResponse({ user_id, name, email, created_at }): NewUserResponse {
     return {
       user_id,
@@ -102,5 +111,102 @@ export class AuthService {
     return {
       message: 'Email with activation link has resend successful',
     };
+  }
+
+  async login(
+    loginData: AuthLoginDto,
+    res: Response,
+    req,
+    tokenObj: Token,
+  ): Promise<any> {
+    try {
+      if (tokenObj) {
+        throw { message: 'You are already logged in' };
+      }
+
+      const user = await User.findOne({
+        email: loginData.email,
+        password_hash: hashPassword(loginData.password),
+        activated: true,
+      });
+
+      if (!user) {
+        throw { message: 'Invalid login data!' };
+      }
+
+      const token = await this.createToken(await this.generateToken(user, req));
+
+      return res
+        .cookie('jwt', token.accessToken, {
+          secure: false,
+          domain: 'localhost',
+          httpOnly: true,
+        })
+        .json({ ok: 1 });
+    } catch (error) {
+      return res.status(403).json({
+        statusCode: 403,
+        message: error.message,
+        error: 'Forbidden',
+      });
+    }
+  }
+
+  private createToken(currentTokenId: string): {
+    accessToken: string;
+    expiresIn: number;
+  } {
+    const payload: JwtPayload = { id: currentTokenId };
+    const expiresIn = 30 * 24 * 60 * 60;
+    const accessToken = sign(
+      payload,
+      'ildsafafafafafafafafafuvcbaweiucldscahnucraeosyfusbdfylkeabcnxfwacifwxif7ctawlxufwabtcnixfnybawlcfnwfxgiyerfguisdgfaiusdgfasidyfgiuaeghfiuiuawegifkjhcvjhcvbvhdscyhsdyucvweuydautdasxazinmzjmAKOZMazmLAZMASJKCNHSIDCBASHKDCBHBhcbshkcbsdckjsdnbc',
+      { expiresIn },
+    );
+    return {
+      accessToken,
+      expiresIn,
+    };
+  }
+
+  private async generateToken(user: User, req): Promise<string> {
+    let token;
+    let userWithThisToken = null;
+
+    do {
+      token = uuid();
+      userWithThisToken = await Token.findOne({ token });
+    } while (!!userWithThisToken);
+
+    const clientData = this.statsService.getClientDataFromReq(req);
+    const userToken = new Token();
+
+    userToken.token = token;
+    userToken.agent = clientData.agent;
+    userToken.ip = clientData.ip;
+    userToken.referrer = clientData.referrer;
+    userToken.user_id = user;
+    await userToken.save();
+
+    return token;
+  }
+
+  async logout(TokenObj: Token, res: Response) {
+    try {
+      await TokenObj.remove();
+      res.clearCookie('jwt', {
+        secure: false,
+        domain: 'localhost',
+        httpOnly: true,
+      });
+
+      return res.json({ ok: 1 });
+    } catch (error) {
+      return res.status(403).json({
+        statusCode: 403,
+        message: error.message,
+        error: 'Forbidden',
+      });
+    }
   }
 }

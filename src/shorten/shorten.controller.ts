@@ -8,7 +8,10 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { MyAuthGuard } from 'src/guards/my-auth.guard';
 import {
   createNewRedirectResponse,
   DeleteRedirectLinkResponse,
@@ -31,6 +34,7 @@ export class ShortenController {
   }
 
   @Get('pages/:page/:limit?')
+  @UseGuards(AuthGuard('jwt'))
   getRedirectLinkPage(
     @Param('page', new ParseIntPipe()) page: number,
     @Param('limit', new DefaultValuePipe(10), new ParseIntPipe()) limit,

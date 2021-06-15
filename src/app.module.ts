@@ -5,9 +5,9 @@ import { AppService } from './app.service';
 import { ShortenModule } from './shorten/shorten.module';
 import { UserModule } from './user/user.module';
 import { StatsModule } from './stats/stats.module';
-import { RolesModule } from './roles/roles.module';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
+import { RolesModule } from './roles/roles.module';
 
 @Module({
   imports: [

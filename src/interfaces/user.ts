@@ -1,5 +1,5 @@
-import { Role } from 'src/roles/entity/role.entity';
 import { RedirectLink } from 'src/shorten/entity/redirect-link.entity';
+import { Role } from 'src/roles/entity/role.entity';
 
 export interface UserInterface {
   user_id: string;
@@ -12,4 +12,3 @@ export interface UserInterface {
   roles: Role[];
   redirect_links: RedirectLink[];
 }
-
