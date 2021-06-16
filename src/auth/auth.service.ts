@@ -3,7 +3,6 @@ import {
   forwardRef,
   Inject,
   Injectable,
-  InternalServerErrorException,
 } from '@nestjs/common';
 import {
   NewUserResponse,

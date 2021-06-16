@@ -2,8 +2,6 @@ import { RedirectLinkInterface } from 'src/interfaces/redirect-link';
 import { RedirectLog } from 'src/stats/entity/redirect-log.entity';
 import { User } from 'src/user/entity/user.entity';
 import {
-  AfterInsert,
-  AfterUpdate,
   BaseEntity,
   BeforeInsert,
   BeforeUpdate,

@@ -1,7 +1,6 @@
 import {
   BadRequestException,
   ForbiddenException,
-  ImATeapotException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -86,7 +85,7 @@ export class ShortenService {
     limit: number,
   ): Promise<RedirectLinkPageResponse> {
     if (page <= 0) throw new BadRequestException('Page must be positive');
-    
+
     const [items, count] = await RedirectLink.findAndCount({
       skip: limit * (page - 1),
       take: limit,

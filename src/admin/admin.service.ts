@@ -5,7 +5,6 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { UserInfo } from 'os';
 import { Token } from 'src/auth/entity/token.entity';
 import {
   AllUsersResponse,
@@ -18,7 +17,6 @@ import {
 } from 'src/interfaces/admin';
 import { Role } from 'src/roles/entity/role.entity';
 import { RolesService } from 'src/roles/roles.service';
-import { User } from 'src/user/entity/user.entity';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()

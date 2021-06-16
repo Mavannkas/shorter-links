@@ -11,7 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { MyAuthGuard } from 'src/guards/my-auth.guard';
+
 import {
   createNewRedirectResponse,
   DeleteRedirectLinkResponse,

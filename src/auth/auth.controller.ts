@@ -17,7 +17,7 @@ import { AuthService } from './auth.service';
 import { registerUserDto } from './dto/register-user.dto';
 import { Response } from 'express';
 import { AuthLoginDto } from './dto/auth.login.dto';
-import { UserObj } from 'src/decorators/user-obj.decorator';
+
 import { MyAuthGuard } from 'src/guards/my-auth.guard';
 import { TokenObj } from 'src/decorators/token-obj.decorator';
 import { AuthGuard } from '@nestjs/passport';
@@ -32,9 +32,15 @@ export class AuthController {
     return this.authService.registerUser(registerData);
   }
 
+  @Get('login')
+  // @UseGuards(AuthGuard('jwt'))
+  login() {
+    return 'Login site';
+  }
+
   @Post('login')
   @UseGuards(new MyAuthGuard())
-  login(
+  loginUser(
     @Body() loginData: AuthLoginDto,
     @Res() res: Response,
     @Req() req,
