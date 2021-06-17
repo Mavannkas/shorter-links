@@ -1,6 +1,7 @@
 import { Token } from 'src/auth/entity/token.entity';
 import { Role } from 'src/roles/entity/role.entity';
 import { RedirectLink } from 'src/shorten/entity/redirect-link.entity';
+import { TokenResponse } from './auth';
 
 export interface UserMinimalData {
   user_id: string;
@@ -15,12 +16,12 @@ export interface UserExtendedData {
   email: string;
   created_at: Date;
   roles: Role[];
-  tokens: Token[];
+  tokens: TokenResponse[];
   redirect_links: RedirectLink[];
 }
 
 export type UserRolesResponse = Role[];
-export type UserTokensResponse = Token[];
+export type UserTokensResponse = TokenResponse[];
 export type UserRedirectsResponse = RedirectLink[];
 export type AllUsersResponse = UserMinimalData[];
 export type UserResponse = UserExtendedData;

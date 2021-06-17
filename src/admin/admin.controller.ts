@@ -51,7 +51,6 @@ export class AdminController {
 
   @Post('user/:id/roles')
   @UseGuards(AuthGuard('jwt'), PermissionGuard)
-  @UseFilters(new ForbiddenRedirectFilter())
   addUserRole(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() newRole: AddRoleDto,
@@ -61,7 +60,6 @@ export class AdminController {
 
   @Delete('user/:id/roles/:roleId')
   @UseGuards(AuthGuard('jwt'), PermissionGuard)
-  @UseFilters(new ForbiddenRedirectFilter())
   deleteUserRole(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Param('roleId', new ParseUUIDPipe()) roleId: string,
@@ -80,7 +78,6 @@ export class AdminController {
 
   @Delete('user/:id/tokens/:tokenId')
   @UseGuards(AuthGuard('jwt'), PermissionGuard)
-  @UseFilters(new ForbiddenRedirectFilter())
   deleteUserToken(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Param('tokenId', new ParseUUIDPipe()) tokenId: string,

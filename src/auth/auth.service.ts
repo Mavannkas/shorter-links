@@ -7,6 +7,7 @@ import {
 import {
   NewUserResponse,
   ResendResponse,
+  TokenResponse,
   UserActiveResponse,
   VerifyResponse,
 } from 'src/interfaces/auth';
@@ -112,17 +113,8 @@ export class AuthService {
     };
   }
 
-  async login(
-    loginData: AuthLoginDto,
-    res: Response,
-    req,
-    tokenObj: Token,
-  ): Promise<any> {
+  async login(loginData: AuthLoginDto, res: Response, req): Promise<any> {
     try {
-      if (tokenObj) {
-        throw { message: 'You are already logged in' };
-      }
-
       const user = await User.findOne({
         email: loginData.email,
         password_hash: hashPassword(loginData.password),

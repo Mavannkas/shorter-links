@@ -25,14 +25,18 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       return done(new UnauthorizedException(), false);
     }
 
-    const token = await Token.findOne({ token: payload.id });
+    const token = await Token.findOne(
+      { token: payload.id },
+      {
+        relations: ['user_id'],
+      },
+    );
 
     if (!token) {
       return done(new UnauthorizedException(), false);
     }
 
-    const user = await User.findOne(token.user_id);
-
+    const user = await User.findOne(token.user_id.user_id);
     done(null, { token, user });
   }
 }

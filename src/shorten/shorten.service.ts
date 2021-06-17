@@ -15,15 +15,18 @@ import { CreateNewRedirectLinkDto } from './dto/create-new-redirect-link.dto';
 import { RedirectLink } from './entity/redirect-link.entity';
 import axios from 'axios';
 import { UpdateRedirectLinkDto } from './dto/update-redirect-link.dto';
+import { User } from 'src/user/entity/user.entity';
+import { ForbiddenRedirectFilter } from 'src/filters/forbidden-redirect.filter';
 
 @Injectable()
 export class ShortenService {
   async createNewRedirect(
     createNewRedirectData: CreateNewRedirectLinkDto,
+    user?: User,
   ): Promise<createNewRedirectResponse> {
     await this.checkIfSourceExists(createNewRedirectData.source);
 
-    const newRedirect = await this.buildRedirect(createNewRedirectData);
+    const newRedirect = await this.buildRedirect(createNewRedirectData, user);
     await newRedirect.save();
 
     return {
@@ -33,6 +36,7 @@ export class ShortenService {
 
   async buildRedirect(
     createNewRedirectData: CreateNewRedirectLinkDto,
+    user?: User | undefined,
   ): Promise<RedirectLink> {
     const newRedirect = new RedirectLink();
     newRedirect.source = createNewRedirectData.source;
@@ -42,6 +46,8 @@ export class ShortenService {
     } else {
       newRedirect.id = await this.generateDefaultID();
     }
+
+    newRedirect.user_id = user ?? null;
 
     return newRedirect;
   }
@@ -83,12 +89,18 @@ export class ShortenService {
   async getRedirectLinkPage(
     page: number,
     limit: number,
+    user: User,
   ): Promise<RedirectLinkPageResponse> {
     if (page <= 0) throw new BadRequestException('Page must be positive');
 
     const [items, count] = await RedirectLink.findAndCount({
       skip: limit * (page - 1),
       take: limit,
+      where: [
+        {
+          user_id: user.user_id,
+        },
+      ],
     });
 
     const lastPage = Math.ceil(count / limit);
@@ -100,18 +112,19 @@ export class ShortenService {
     };
   }
 
-  async getRedirectLink(id: string): Promise<RedirectLinkResponse> {
-    const redirectLink = await this.getRedirectById(id);
+  async getRedirectLink(id: string, user: User): Promise<RedirectLinkResponse> {
+    const redirectLink = await this.getRedirectById(id, user);
     return this.prepareResponseData(redirectLink);
   }
 
   async updateRedirectLink(
     id: string,
     updateData: UpdateRedirectLinkDto,
+    user: User,
   ): Promise<RedirectLinkResponse> {
     await this.checkUpdateData(updateData);
 
-    const redirectLink = await this.updateRedirectById(id, updateData);
+    const redirectLink = await this.updateRedirectById(id, updateData, user);
 
     await redirectLink.save();
 
@@ -129,15 +142,19 @@ export class ShortenService {
   async updateRedirectById(
     id: string,
     { source = undefined, customID = undefined },
+    user: User,
   ): Promise<RedirectLink> {
-    const redirectLink = await this.getRedirectById(id);
+    const redirectLink = await this.getRedirectById(id, user);
     if (source) redirectLink.source = source;
     if (customID) redirectLink.id = customID;
     return redirectLink;
   }
 
-  async deleteRedirectLink(id: string): Promise<DeleteRedirectLinkResponse> {
-    const redirectLink = await this.getRedirectById(id);
+  async deleteRedirectLink(
+    id: string,
+    user: User,
+  ): Promise<DeleteRedirectLinkResponse> {
+    const redirectLink = await this.getRedirectById(id, user);
     redirectLink.id = null;
     redirectLink.deleted = true;
 
@@ -147,11 +164,12 @@ export class ShortenService {
     };
   }
 
-  async getRedirectById(id: string): Promise<RedirectLink> {
+  async getRedirectById(id: string, user: User): Promise<RedirectLink> {
     try {
       return await RedirectLink.findOneOrFail({
         redirect_link_id: id,
         deleted: false,
+        user_id: user,
       });
     } catch (error) {
       throw new NotFoundException('This redirect link not exists');

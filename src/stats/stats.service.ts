@@ -3,6 +3,8 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { RedirectLinkStatsResponse, StatsResponse } from 'src/interfaces/stats';
 import { RedirectLink } from 'src/shorten/entity/redirect-link.entity';
 import { ShortenService } from 'src/shorten/shorten.service';
+import { User } from 'src/user/entity/user.entity';
+import { UserService } from 'src/user/user.service';
 import { getConnection } from 'typeorm';
 import { RedirectLog } from './entity/redirect-log.entity';
 
@@ -37,7 +39,21 @@ export class StatsService {
     return log;
   }
 
-  async getStats(): Promise<StatsResponse> {
+  async getStats(user: User): Promise<StatsResponse> {
+    const redirectCount = await getConnection()
+      .createQueryBuilder()
+      .select('redirectLog')
+      .from(RedirectLog, 'redirectLog')
+      .leftJoinAndSelect('redirectLog.redirect_link_id', 'redirect_link_id')
+      .leftJoinAndSelect('redirect_link_id.user_id', 'user_id')
+      .where('user_id.user_id = :id', {
+        id: user.user_id,
+      })
+      .getCount();
+    return { redirectCount };
+  }
+
+  async getAllStats(): Promise<StatsResponse> {
     const redirectCount = await RedirectLog.count();
     return { redirectCount };
   }

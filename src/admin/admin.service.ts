@@ -15,6 +15,7 @@ import {
   UserRolesResponse,
   UserTokensResponse,
 } from 'src/interfaces/admin';
+import { TokenResponse } from 'src/interfaces/auth';
 import { Role } from 'src/roles/entity/role.entity';
 import { RolesService } from 'src/roles/roles.service';
 import { UserService } from 'src/user/user.service';
@@ -62,7 +63,7 @@ export class AdminService {
       user_id,
       created_at,
       roles,
-      tokens,
+      tokens: tokens.map(this.prepareTokenResponse),
       redirect_links,
     };
   }
@@ -98,7 +99,7 @@ export class AdminService {
 
   async getUserTokens(id: string): Promise<UserTokensResponse> {
     const user = await this.userService.getUserById(id);
-    return user.tokens;
+    return user.tokens.map(this.prepareTokenResponse);
   }
 
   async deleteUserToken(
@@ -120,11 +121,29 @@ export class AdminService {
     }
 
     await token.remove();
-    return user.tokens;
+    return user.tokens.map(this.prepareTokenResponse);
   }
 
   async getUserRedirects(id: string): Promise<UserRedirectsResponse> {
     const user = await this.userService.getUserById(id);
     return user.redirect_links;
+  }
+
+  prepareTokenResponse({
+    agent,
+    created_at,
+    ip,
+    referrer,
+    token_id,
+    user_id,
+  }): TokenResponse {
+    return {
+      agent,
+      created_at,
+      ip,
+      referrer,
+      token_id,
+      user_id,
+    };
   }
 }
