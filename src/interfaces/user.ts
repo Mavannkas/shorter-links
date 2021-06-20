@@ -13,6 +13,18 @@ export interface UserInterface {
   redirect_links: RedirectLink[];
 }
 
+export interface RolesResponse {
+  name: string;
+}
+
 export interface DeleteUserResponse {
+  ok: string;
+}
+
+export interface DeleteSessionResponse {
+  ok: string;
+}
+
+export interface PasswordChangeResponse {
   ok: string;
 }

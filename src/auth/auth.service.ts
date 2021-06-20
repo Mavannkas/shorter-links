@@ -23,6 +23,9 @@ import { sign } from 'jsonwebtoken';
 import { JwtPayload } from './jwt.strategy';
 import { Token } from './entity/token.entity';
 import { StatsService } from 'src/stats/stats.service';
+import { RolesService } from 'src/roles/roles.service';
+import { UserRole } from 'src/interfaces/role';
+import { Stats } from 'fs';
 
 @Injectable()
 export class AuthService {
@@ -33,6 +36,8 @@ export class AuthService {
     private mailService: MailService,
     @Inject(forwardRef(() => StatsService))
     private statsService: StatsService,
+    @Inject(forwardRef(() => RolesService))
+    private rolesService: RolesService,
   ) {}
 
   async registerUser(registerData: registerUserDto): Promise<NewUserResponse> {
@@ -40,10 +45,13 @@ export class AuthService {
       await this.userService.checkIfUserExists(registerData);
 
       const user = new User();
+
+      const role = await this.rolesService.getRoleByName(UserRole.User);
       user.email = registerData.email;
       user.name = registerData.name;
       user.password_hash = hashPassword(registerData.password);
       user.activation_hash = hashRandom();
+      user.roles.push(role);
 
       await this.sendActivationEmail(user);
 
@@ -115,11 +123,10 @@ export class AuthService {
 
   async login(loginData: AuthLoginDto, res: Response, req): Promise<any> {
     try {
-      const user = await User.findOne({
-        email: loginData.email,
-        password_hash: hashPassword(loginData.password),
-        activated: true,
-      });
+      const user = await this.getAndValidUser(
+        loginData.email,
+        loginData.password,
+      );
 
       if (!user) {
         throw { message: 'Invalid login data!' };
@@ -141,6 +148,17 @@ export class AuthService {
         error: 'Forbidden',
       });
     }
+  }
+
+  async getAndValidUser(
+    email: string,
+    password: string,
+  ): Promise<User | undefined> {
+    return await User.findOne({
+      email,
+      password_hash: hashPassword(password),
+      activated: true,
+    });
   }
 
   private createToken(currentTokenId: string): {

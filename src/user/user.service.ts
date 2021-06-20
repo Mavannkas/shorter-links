@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   forwardRef,
   Inject,
@@ -9,7 +10,16 @@ import { AdminService } from 'src/admin/admin.service';
 import { AuthService } from 'src/auth/auth.service';
 import { Token } from 'src/auth/entity/token.entity';
 import { TokenResponse } from 'src/interfaces/auth';
-import { DeleteUserResponse } from 'src/interfaces/user';
+import { UserRole } from 'src/interfaces/role';
+import {
+  DeleteSessionResponse,
+  DeleteUserResponse,
+  PasswordChangeResponse,
+  RolesResponse,
+} from 'src/interfaces/user';
+import { hashPassword } from 'src/utils/hash';
+import { IsNull, Not } from 'typeorm';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 import { User } from './entity/user.entity';
 
@@ -40,7 +50,9 @@ export class UserService {
   }
 
   async getAllUsers(): Promise<User[]> {
-    return await User.find();
+    return await User.find({
+      name: Not(IsNull()),
+    });
   }
 
   async getUserById(id: string): Promise<User> {
@@ -55,11 +67,14 @@ export class UserService {
     return user;
   }
 
-  async getSessions(user: User): Promise<TokenResponse[]> {
+  async getSessions(user: User, token: Token): Promise<TokenResponse[]> {
     const res = (await this.getUserById(user.user_id)).tokens.map(
       this.adminService.prepareTokenResponse,
     );
-    return res;
+    return res.map((item: TokenResponse) => {
+      item.active = item.token_id === token.token_id;
+      return item;
+    });
   }
 
   async deleteUser(user: User, res): Promise<DeleteUserResponse> {
@@ -97,5 +112,81 @@ export class UserService {
     for (const i in object) {
       await object[i].remove();
     }
+  }
+
+  async deleteSession(id: string, { user_id }): Promise<DeleteSessionResponse> {
+    const user = await this.getUserById(user_id);
+    const token = user.tokens.find((item: Token) =>
+      this.isEqual(item.token_id, id),
+    );
+    if (token) {
+      await token.remove();
+      return {
+        ok: '1',
+      };
+    } else {
+      throw new NotFoundException('This sessions not exists');
+    }
+  }
+
+  async getRoles({ user_id }): Promise<RolesResponse[]> {
+    const user = await this.getUserById(user_id);
+    return user.roles.map(({ name }) => ({
+      name,
+    }));
+  }
+
+  async changePass(
+    mainUser: User,
+    password: ChangePasswordDto,
+    token: Token,
+  ): Promise<PasswordChangeResponse> {
+    this.tryIsPasswordIsValid(password);
+
+    const user = await this.authService.getAndValidUser(
+      mainUser.email,
+      password.old_password,
+    );
+
+    if (!user) {
+      throw new BadRequestException('Bad password');
+    }
+
+    user.password_hash = hashPassword(password.new_password);
+
+    await user.save();
+
+    await this.clearOtherSessions(mainUser, token);
+
+    return {
+      ok: '1',
+    };
+  }
+
+  tryIsPasswordIsValid({
+    old_password,
+    old_password_repeat,
+    new_password,
+  }): void {
+    if (old_password !== old_password_repeat) {
+      throw new BadRequestException('Passwords is not equal');
+    }
+
+    if (old_password === new_password) {
+      throw new BadRequestException('Old and new password is the same');
+    }
+  }
+
+  async clearOtherSessions({ user_id }, token: Token): Promise<void> {
+    const user = await this.getUserById(user_id);
+    const tokens = user.tokens.filter(
+      (item: Token) => !this.isEqual(item.token_id, token.token_id),
+    );
+
+    await this.clear(tokens);
+  }
+
+  isEqual(a, b) {
+    return a === b;
   }
 }

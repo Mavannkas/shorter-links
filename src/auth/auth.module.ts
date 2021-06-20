@@ -5,12 +5,14 @@ import { UserModule } from 'src/user/user.module';
 import { MailModule } from 'src/mail/mail.module';
 import { JwtStrategy } from './jwt.strategy';
 import { StatsModule } from 'src/stats/stats.module';
+import { RolesModule } from 'src/roles/roles.module';
 
 @Module({
   imports: [
     forwardRef(() => UserModule),
     forwardRef(() => MailModule),
     forwardRef(() => StatsModule),
+    forwardRef(() => RolesModule),
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],

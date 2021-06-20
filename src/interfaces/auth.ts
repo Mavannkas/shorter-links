@@ -27,4 +27,5 @@ export interface TokenResponse {
   ip: string;
   agent: string;
   referrer: string;
+  active?: boolean;
 }
