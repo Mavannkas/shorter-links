@@ -136,6 +136,7 @@ export class AdminService {
     referrer,
     token_id,
     user_id,
+    name,
   }): TokenResponse {
     return {
       agent,
@@ -144,6 +145,7 @@ export class AdminService {
       referrer,
       token_id,
       user_id,
+      name,
     };
   }
 }

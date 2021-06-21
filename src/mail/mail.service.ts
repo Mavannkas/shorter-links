@@ -6,7 +6,7 @@ import { ActiveMailBody } from 'src/interfaces/mail';
 export class MailService {
   constructor(private readonly mailerService: MailerService) {}
 
-  async sendActivationMail(to: string, body: ActiveMailBody): Promise<any> {
+  async sendMail(to: string, body: ActiveMailBody, template): Promise<any> {
     await this.mailerService.sendMail({
       to,
       subject: `Hi, ${body.name}`,

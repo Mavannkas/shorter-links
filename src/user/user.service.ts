@@ -20,6 +20,7 @@ import {
 import { hashPassword } from 'src/utils/hash';
 import { IsNull, Not } from 'typeorm';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { SessionNameDto } from './dto/session-name.dto';
 
 import { User } from './entity/user.entity';
 
@@ -114,19 +115,12 @@ export class UserService {
     }
   }
 
-  async deleteSession(id: string, { user_id }): Promise<DeleteSessionResponse> {
-    const user = await this.getUserById(user_id);
-    const token = user.tokens.find((item: Token) =>
-      this.isEqual(item.token_id, id),
-    );
-    if (token) {
-      await token.remove();
-      return {
-        ok: '1',
-      };
-    } else {
-      throw new NotFoundException('This sessions not exists');
-    }
+  async deleteSession(id: string, user: User): Promise<DeleteSessionResponse> {
+    const token = await this.getUserToken(user.user_id, id);
+    await token.remove();
+    return {
+      ok: '1',
+    };
   }
 
   async getRoles({ user_id }): Promise<RolesResponse[]> {
@@ -141,7 +135,10 @@ export class UserService {
     password: ChangePasswordDto,
     token: Token,
   ): Promise<PasswordChangeResponse> {
-    this.tryIsPasswordIsValid(password);
+    this.tryIsPasswordIsValid(
+      password.old_password,
+      password.old_password_repeat,
+    );
 
     const user = await this.authService.getAndValidUser(
       mainUser.email,
@@ -163,17 +160,9 @@ export class UserService {
     };
   }
 
-  tryIsPasswordIsValid({
-    old_password,
-    old_password_repeat,
-    new_password,
-  }): void {
+  tryIsPasswordIsValid(old_password, old_password_repeat): void {
     if (old_password !== old_password_repeat) {
       throw new BadRequestException('Passwords is not equal');
-    }
-
-    if (old_password === new_password) {
-      throw new BadRequestException('Old and new password is the same');
     }
   }
 
@@ -188,5 +177,31 @@ export class UserService {
 
   isEqual(a, b) {
     return a === b;
+  }
+
+  async addSessionName(
+    id: string,
+    user: User,
+    name: SessionNameDto,
+  ): Promise<TokenResponse> {
+    const token = await this.getUserToken(user.user_id, id);
+
+    token.name = name.name;
+
+    await token.save();
+
+    return this.adminService.prepareTokenResponse(token);
+  }
+
+  async getUserToken(user_id, id): Promise<Token> {
+    const user = await this.getUserById(user_id);
+    const token = user.tokens.find((item: Token) =>
+      this.isEqual(item.token_id, id),
+    );
+
+    if (!token) {
+      throw new NotFoundException('This sessions not exists');
+    }
+    return token;
   }
 }

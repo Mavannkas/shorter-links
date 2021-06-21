@@ -1,11 +1,14 @@
 import {
+  BadRequestException,
   ForbiddenException,
   forwardRef,
   Inject,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import {
   NewUserResponse,
+  RecoveryPasswordResponse,
   ResendResponse,
   TokenResponse,
   UserActiveResponse,
@@ -26,6 +29,7 @@ import { StatsService } from 'src/stats/stats.service';
 import { RolesService } from 'src/roles/roles.service';
 import { UserRole } from 'src/interfaces/role';
 import { Stats } from 'fs';
+import { RecoveryPasswordDto } from './dto/recovery-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -53,7 +57,10 @@ export class AuthService {
       user.activation_hash = hashRandom();
       user.roles.push(role);
 
-      await this.sendActivationEmail(user);
+      await this.sendMail(
+        user,
+        `http://localhost:3000/main/auth/verify/${user.activation_hash}`,
+      );
 
       await user.save();
 
@@ -63,11 +70,15 @@ export class AuthService {
     }
   }
 
-  async sendActivationEmail({ email, name, activation_hash }) {
-    await this.mailService.sendActivationMail(email, {
-      name,
-      url: `http://localhost:3000/main/auth/verify/${activation_hash}`,
-    });
+  async sendMail({ email, name }, url, template = 'activate') {
+    await this.mailService.sendMail(
+      email,
+      {
+        name,
+        url,
+      },
+      template,
+    );
   }
 
   prepareUserResponse({ user_id, name, email, created_at }): NewUserResponse {
@@ -111,7 +122,10 @@ export class AuthService {
     if (user) {
       user.activation_hash = hashRandom();
 
-      await this.sendActivationEmail(user);
+      await this.sendMail(
+        user,
+        `http://localhost:3000/main/auth/verify/${user.activation_hash}`,
+      );
 
       await user.save();
     }
@@ -217,5 +231,59 @@ export class AuthService {
         error: 'Forbidden',
       });
     }
+  }
+
+  async recoveryPassword(email: string): Promise<ResendResponse> {
+    const user = await User.findOne({ email });
+
+    if (user) {
+      user.change_password_hash = hashRandom();
+
+      await this.sendMail(
+        user,
+        `http://localhost:3000/main/auth/change-password/${user.change_password_hash}`,
+        'change-password',
+      );
+
+      await user.save();
+    }
+
+    return {
+      message: `Email with change password link has send on ${email}`,
+    };
+  }
+
+  async changePassword(
+    hash: string,
+    password: RecoveryPasswordDto,
+  ): Promise<RecoveryPasswordResponse> {
+    this.userService.tryIsPasswordIsValid(
+      password.password,
+      password.password_repeat,
+    );
+
+    const user = await User.findOne(
+      {
+        change_password_hash: hash,
+      },
+      {
+        relations: ['tokens'],
+      },
+    );
+
+    if (!user) {
+      throw new ForbiddenException('Change password failed, hash not exists');
+    }
+
+    user.change_password_hash = null;
+    user.password_hash = hashPassword(password.password);
+
+    await user.save();
+
+    await this.userService.clear(user.tokens);
+
+    return {
+      ok: '1',
+    };
   }
 }

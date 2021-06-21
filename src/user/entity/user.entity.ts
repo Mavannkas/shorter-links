@@ -45,6 +45,12 @@ export class User extends BaseEntity implements UserInterface {
   activation_hash: string;
 
   @Column({
+    nullable: true,
+    default: null,
+  })
+  change_password_hash: string;
+
+  @Column({
     type: 'boolean',
     default: 0,
   })

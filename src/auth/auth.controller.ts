@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import {
   NewUserResponse,
+  RecoveryPasswordResponse,
   ResendResponse,
   VerifyResponse,
 } from 'src/interfaces/auth';
@@ -25,6 +26,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { Token } from './entity/token.entity';
 import { ForbiddenRedirectFilter } from 'src/filters/forbidden-redirect.filter';
 import { UserNotLoginGuard } from 'src/guards/user-not-login.guard';
+import { CheckEmailPipe } from 'src/pipes/check-email.pipe';
+import { RecoveryPasswordDto } from './dto/recovery-password.dto';
 
 @Controller('main/auth')
 export class AuthController {
@@ -70,7 +73,27 @@ export class AuthController {
   @Get('resend-email/:email')
   @UseGuards(new UserNotLoginGuard())
   @UseFilters(new ForbiddenRedirectFilter('/main/user'))
-  resendEmail(@Param('email') email: string): Promise<ResendResponse> {
+  resendEmail(
+    @Param('email', new CheckEmailPipe()) email: string,
+  ): Promise<ResendResponse> {
     return this.authService.resendEmail(email);
+  }
+
+  @Get('recovery-password/:email')
+  @UseGuards(new UserNotLoginGuard())
+  @UseFilters(new ForbiddenRedirectFilter('/main/user'))
+  recoveryPassword(
+    @Param('email', new CheckEmailPipe()) email: string,
+  ): Promise<ResendResponse> {
+    return this.authService.recoveryPassword(email);
+  }
+
+  @Post('change-password/:hash')
+  @UseGuards(new UserNotLoginGuard())
+  changePassword(
+    @Param('hash') hash: string,
+    @Body() password: RecoveryPasswordDto,
+  ): Promise<RecoveryPasswordResponse> {
+    return this.authService.changePassword(hash, password);
   }
 }

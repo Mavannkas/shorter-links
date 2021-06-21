@@ -30,6 +30,12 @@ export class Token extends BaseEntity {
     nullable: true,
     default: null,
   })
+  name: string;
+
+  @Column({
+    nullable: true,
+    default: null,
+  })
   agent: string;
 
   @Column({

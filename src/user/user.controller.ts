@@ -24,6 +24,7 @@ import {
   RolesResponse,
 } from 'src/interfaces/user';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { SessionNameDto } from './dto/session-name.dto';
 import { User } from './entity/user.entity';
 import { UserService } from './user.service';
 
@@ -61,6 +62,16 @@ export class UserController {
     @UserObj() user: User,
   ): Promise<DeleteSessionResponse> {
     return this.userService.deleteSession(id, user);
+  }
+
+  @Patch('sessions/:id')
+  @UseGuards(AuthGuard('jwt'))
+  addSessionName(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @UserObj() user: User,
+    @Body() name: SessionNameDto,
+  ): Promise<TokenResponse> {
+    return this.userService.addSessionName(id, user, name);
   }
 
   @Get('roles')

@@ -27,5 +27,10 @@ export interface TokenResponse {
   ip: string;
   agent: string;
   referrer: string;
+  name: string | null;
   active?: boolean;
+}
+
+export interface RecoveryPasswordResponse {
+  ok: string;
 }
