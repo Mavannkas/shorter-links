@@ -1,0 +1,37 @@
+@media(min-width: 992px) {
+    .main {
+        &__background-scissor {
+          display: block;
+          position: absolute;
+          z-index: -1;
+          opacity: .2;
+          &--one {
+            top: 30%;
+            left: 30%;
+            width: 120px;
+            animation: rotate-r 60s .5s infinite;
+          }
+    
+          &--two {
+            top: 45%;
+            right: 12%;
+            width: 80px;
+            animation: rotate-r 30s .7s infinite;
+          }
+    
+          &--three {
+            top: 60%;
+            left: 10%;
+            width: 160px;
+            animation: rotate 90s infinite;
+          }
+    
+          &--four {
+            top: 16%;
+            right: 30%;
+            width: 200px;
+            animation: rotate 45s 1s infinite;
+          }
+        }
+    }
+}
