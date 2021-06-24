@@ -15,26 +15,45 @@
     <main class="main">
 
 
-    <img class="main__svg main__svg--bottom" src="./dist/img/icons/waves.svg" alt="">
     <img class="main__background-scissor main__background-scissor--one" src="./dist/img/icons/orange_scissors.svg" alt="">
     <img class="main__background-scissor main__background-scissor--two" src="./dist/img/icons/orange_scissors.svg" alt="">
     <img class="main__background-scissor main__background-scissor--three" src="./dist/img/icons/orange_scissors.svg" alt="">
     <img class="main__background-scissor main__background-scissor--four" src="./dist/img/icons/orange_scissors.svg" alt="">
 
-    
     <header class="header">
-        <div class="wrapper">
-            <div class="header__logo">
-                <div class="header__logo-svg">
-                    <img class="icon icon-tabler icon-tabler-scissors" src="./dist/img/icons/gray_scissors.svg" alt="">
-                </div>
-                <a class="header__logo-text" href="#">Shorten link</a>
+    <div class="wrapper">
+        <div class="header__logo">
+            <div class="header__logo-svg">
+                <img class="icon icon-tabler icon-tabler-scissors" src="./dist/img/icons/gray_scissors.svg" alt="">
             </div>
-            <div class="header__login">
-                <a class="header__login-link" href="#" >Log in</a>
+            <a class="header__logo-text" href="#">Shorten link</a>
+        </div>            
+        <nav class="nav-desktop">   
+            <div class="nav-desktop__items">
+                <a class="nav-desktop__item" href="">Home</a>
+                <a class="nav-desktop__item" href="/info">Info</a>
+                <a class="nav-desktop__item" href="/faq">Faq</a>
+                <a class="nav-desktop__item" href="/stats">Stats</a>
+                <a class="nav-desktop__item" href="/main/login">Log in</a>
             </div>
+        </nav>
+    </div>
+
+    <button class="burger">
+        <div class="burger__button">
+            <div class="burger__bars"></div>
         </div>
-    </header>
+    </button>
+    <nav class="nav-mobile">   
+        <div class="nav-mobile__items">
+            <a class="nav-mobile__item" href="#" style="animation-delay: .1s;">Home</a>
+            <a class="nav-mobile__item" href="/info" style="animation-delay: .3s;">Info</a>
+            <a class="nav-mobile__item" href="/faq" style="animation-delay: 0s;">Faq</a>
+            <a class="nav-mobile__item" href="/stats" style="animation-delay: .2s;">Stats</a>
+            <a class="nav-mobile__item" href="/main/login" style="animation-delay: .4s;">Log in</a>
+        </div>
+    </nav>
+</header>
     <form>
         <section class="create">
             <p class="create__info">.</p>
@@ -53,11 +72,14 @@
             <button type="button" class="create__button">Cut now</button>
         </section>
     </form>
-    <footer class="footer">
-        <div class="wrapper">
-            <p class="footer__text">Created by: <a class="footer__link" href="https://github.com/Mavannkas" target="_blank" rel="noopener noreferrer">© Mavannkas</a></p>
-        </div>
-    </footer>
 </main>
-<script src="./dist/js/home.min.js" defer></script></body>
+<footer class="footer">
+    <div class="wrapper">
+        <p class="footer__text">Created by: <a class="footer__link" href="https://github.com/Mavannkas" target="_blank" rel="noopener noreferrer">© Mavannkas</a></p>
+    </div>
+    <img class="svg svg--bottom" src="./dist/img/icons/waves.svg" alt="">
+</footer>
+
+<script src="./dist/js/home.min.js" defer></script>
+</body>
 </html>

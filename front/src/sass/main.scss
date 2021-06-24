@@ -71,27 +71,13 @@ html {
   }
 }
 
+body {
+  min-height: 100%;
+  background: $background;
+}
+
 .main {
-    position: relative;
-    padding: 3em 1.8em;
-    min-height: 100vh;
-    background: $background;
     z-index: 0;
-
-    &__svg {
-        position: absolute;
-        left: 0;
-        pointer-events: none;
-        z-index: -1;
-
-        &--top {
-            top: 0;
-        }
-
-        &--bottom {
-            bottom: 0;
-        }
-    }
 
     &__background-scissor {
       display: none;
@@ -99,7 +85,9 @@ html {
 }
 
 .header {
-  height: 10vh;
+  position: relative;
+  padding-top: 2em;
+  background-color: $section;
 
     .wrapper {
         display: flex;
@@ -119,33 +107,146 @@ html {
             padding: 0 .5em .5em 0;
             font-size: 2rem;
             font-weight: bold;
-            color: $section;
+            color: $button;
             text-decoration: none;
             transition: color .3s ;
 
             &:hover {
-                color: $hover;
-            }
-        }
-    }
-
-    &__login{
-        &-link {
-            padding: .5em .8em;
-            font-size: 2rem;
-            text-decoration: none;
-            color: $button;
-            border-radius: 35px;
-            transition: color .5s, background-color .5s;
-
-            &:hover {
-                box-shadow: 2px 3px 0 #343f56a1;
-                background-color: $button;
                 color: $background;
             }
         }
     }
 
+    .burger{
+        position: fixed;
+        right: 10px;
+        top: 10px;
+        padding: 1.5em;
+        background-color: transparent;
+        border: 2px solid transparent;
+        outline: none;
+        border-radius: 20px;
+        cursor: pointer;
+        z-index: 200;
+
+
+        &:hover {
+          .burger__bars::before, .burger__bars::after {
+            width: 100%;
+          }
+        }
+
+        &:active {
+          border: 2px solid white;
+        }
+
+        &__button {
+          position: relative;
+          width: 40px;
+          height: 30px;
+        }
+
+        &__bars {
+          width: 100%;
+          height: 4px;
+          background-color: $button;
+
+          &::before, &::after {
+            position: absolute;
+            right: 0;
+            transform: translateY(-50%);
+            height: 4px;
+            background-color: $button;
+            content: '';
+            transition: width .3s;
+
+          }
+          
+          &::before {
+            top: 50%;
+            width: 50%;
+          }
+          
+          &::after {
+            top: 100%;
+            width: 25%;
+          }
+
+        }
+    }
+
+}
+
+.nav-mobile {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(45deg, #f4c075, $section);
+  z-index: 10;
+  transform: translateX(100%);
+  transition: transform .5s ease-in-out;
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__item {
+    position: relative;
+    padding: .5em 2em;
+    margin-bottom: .3em;
+    font-size: 2.8rem;
+    text-decoration: none;
+    color: $button;
+    cursor: pointer;
+    
+    &:hover {
+      &::after {
+        transform: scaleY(1);
+
+      }
+    }
+
+    &::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 2px;
+      background-color: $button;
+      transform: scaleY(0);
+      transform-origin: center;
+      transition: transform .3s;
+      content: '';
+    }
+
+    &-animation {
+      animation: itemAnimation 1s backwards;
+    }
+  }
+}
+
+@keyframes itemAnimation {
+  from{
+    transform: translateX(200%);
+  }
+  to{
+    transform: translateX(0);
+  }
+}
+
+
+.nav--show {
+  transform: translateX(0);
+}
+
+.nav-desktop {
+  display: none;
 }
 
 .create {
@@ -153,9 +254,8 @@ html {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 80vh;
-    margin-top: 15%;
-    // margin-top: 30vh;
+    margin-top: 30vh;
+    margin-bottom: 20vh;
 
     &__input-box {
        position: relative;
@@ -178,6 +278,7 @@ html {
         &--front {
             z-index: 2;
         }
+
         &--back {
             z-index: 1;
             opacity: 0;
@@ -270,11 +371,16 @@ html {
 }
 
 .footer {
+  position: relative;
+
   .wrapper {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    max-width: none;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: flex-end;
-    height: 5vh;
   }
 
   &__text {
@@ -291,7 +397,16 @@ html {
       color: white;
     }
   }
+
 }
+.svg {
+  // position: absolute;
+  // bottom: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+
 @import './small';
 @import './medium';
 @import './large';

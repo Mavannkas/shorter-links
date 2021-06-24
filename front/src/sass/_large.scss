@@ -5,6 +5,7 @@
           position: absolute;
           z-index: -1;
           opacity: .2;
+          
           &--one {
             top: 30%;
             left: 30%;
@@ -34,4 +35,31 @@
           }
         }
     }
+
+    .burger {
+      display: none;
+    }
+
+    .nav-mobile {
+      display: none;
+    }
+
+    .nav-desktop {
+      display: block;
+      
+      &__item {
+        position: relative;
+        padding: 1em .5em;
+        font-size: 3rem;
+        color: $button;
+        text-decoration: none;
+        transition: color .3s;
+
+        &:hover {
+          color: $background;
+        }
+      }
+    }
+
+
 }
