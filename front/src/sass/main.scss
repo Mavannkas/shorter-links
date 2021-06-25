@@ -24,6 +24,11 @@ html {
 	animation: swing 2s linear both;
 }
 
+.page {
+  position: relative;
+  min-height: 100vh;
+}
+
 @keyframes swing {
   0% {
     opacity: 0;
@@ -72,13 +77,11 @@ html {
 }
 
 body {
-  min-height: 100%;
   background: $background;
 }
 
 .main {
     z-index: 0;
-
     &__background-scissor {
       display: none;
     }
@@ -96,7 +99,7 @@ body {
 
     &__logo {
         display: flex;
-
+        padding-left: 2em;
         &-svg {
             margin: 0 1.7em;
             transform: scale(2.5);
@@ -254,8 +257,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    margin-top: 30vh;
-    margin-bottom: 20vh;
+    padding: 20em 0 10em;
 
     &__input-box {
        position: relative;
@@ -371,8 +373,9 @@ body {
 }
 
 .footer {
-  position: relative;
-
+  position: absolute;
+  bottom: 0;
+  width: 100%;
   .wrapper {
     position: absolute;
     bottom: 20px;
