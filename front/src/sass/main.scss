@@ -24,9 +24,12 @@ html {
 	animation: swing 2s linear both;
 }
 
-.page {
-  position: relative;
-  min-height: 100vh;
+.title {
+  margin-top: 3em;
+  text-align: center;
+  font-size: 3rem;
+  font-weight: 200;
+  color: $section;
 }
 
 @keyframes swing {
@@ -77,6 +80,10 @@ html {
 }
 
 body {
+  min-height: 100vh; 
+  
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   background: $background;
 }
 
@@ -373,8 +380,8 @@ body {
 }
 
 .footer {
-  position: absolute;
-  bottom: 0;
+  position: relative;
+
   width: 100%;
   .wrapper {
     position: absolute;
@@ -402,13 +409,104 @@ body {
   }
 
 }
+
 .svg {
-  // position: absolute;
-  // bottom: 0;
   pointer-events: none;
   z-index: -1;
 }
 
+.card {
+  width: 80%;
+  max-width: 1200px;
+  margin: 2em auto 1em;
+  padding: 2em;
+  color: $button;
+  font-size: 1.6rem;
+  background-color: #fff;
+  border-radius: 20px;
+}
+
+.faq {
+  &__elements {
+    list-style: none;
+  }
+
+  &__element {
+    margin-bottom: 1em;
+    border-radius: 10px;
+    border-bottom: 3px solid $section;
+    transition: background-color .3s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #fb930075;
+    }
+
+    &[aria-expanded="true"] {
+      .faq__text {
+        max-height: 1000px;
+        transform: scaleY(1);
+      }
+
+      .faq__header::before {
+        transform: rotateZ(180deg);
+      }
+    }
+  }
+
+  &__header {
+    font-size: 2rem;
+    position: relative;
+    padding: .4em 2em 0;
+
+    &::before {
+      position: absolute;
+      left: 12px;
+      top: 8px;
+      display: inline-block;
+      transform: rotateZ(90deg);
+      content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-up" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><line x1="12" y1="5" x2="12" y2="19"></line><line x1="18" y1="11" x2="12" y2="5"></line><line x1="6" y1="11" x2="12" y2="5"></line></svg>');
+      transition: transform .3s;
+    }
+  }
+
+  &__text {
+    max-height: 0;
+    padding: 1em ;
+    line-height: 30px;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform .5s, max-height .5s;
+  }
+}
+
+.about-us {
+  &__text {
+    line-height: 30px;
+    margin-bottom: 1em;
+  }
+
+  &__bold {
+    font-weight: bold;
+    color: $section;
+  }
+
+  ul {
+    margin-bottom: 2em;
+    list-style-position: inside;
+  }
+}
+
+.stats {
+  &__element {
+    padding: 1em;
+  }
+
+  &__bold {
+    font-weight: bold;
+    color: $section;
+  }
+}
 
 @import './small';
 @import './medium';

@@ -1,6 +1,10 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 
-import { RedirectLinkStatsResponse, StatsResponse } from 'src/interfaces/stats';
+import {
+  PublicStatsResponse,
+  RedirectLinkStatsResponse,
+  StatsResponse,
+} from 'src/interfaces/stats';
 import { RedirectLink } from 'src/shorten/entity/redirect-link.entity';
 import { ShortenService } from 'src/shorten/shorten.service';
 import { User } from 'src/user/entity/user.entity';
@@ -84,6 +88,15 @@ export class StatsService {
     return {
       redirectLink: this.shortenService.prepareResponseData(redirectLink),
       redirectCount,
+    };
+  }
+
+  async getPublicStats(): Promise<PublicStatsResponse> {
+    const redirects = await RedirectLog.count();
+    const redirectLinks = await RedirectLink.count();
+    return {
+      redirectLinks,
+      redirects,
     };
   }
 }

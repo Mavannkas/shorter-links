@@ -1,10 +1,23 @@
 @media(min-width: 768px) {
+  .title {
+    font-size: 4rem;
+  }
 
+  .card {
+    padding: 4em;
+  }
 
-    
-    .nav-mobile {
-        &__item {
-          font-size: 4rem;
-        }
+  .nav-mobile {
+      &__item {
+        font-size: 4rem;
+      }
+  }
+
+  .faq {
+     &__header {
+      font-size: 2.5rem;
+      position: relative;
+      padding: .4em 2em 0;
     }
+  }
 }

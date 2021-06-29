@@ -10,11 +10,21 @@ export class AppController {
   }
 
   @Get('')
-  @Render('pages/home')
-  getHello() {
-    return {
-      msg: 'hello',
-    };
+  @Render('pages/index')
+  getMain() {
+    return;
+  }
+
+  @Get('about-us')
+  @Render('pages/about-us')
+  getAboutUs() {
+    return;
+  }
+
+  @Get('faq')
+  @Render('pages/faq')
+  getFaq() {
+    return;
   }
 
   @Get(':id')

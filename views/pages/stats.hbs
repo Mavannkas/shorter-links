@@ -7,19 +7,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;700&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="./dist/css/main.min.css">
-    <script src="./dist/js/main.min.js"></script>
+    <link rel="stylesheet" href="/dist/css/main.min.css">
+    <script src="/dist/js/main.min.js"></script>
     <title>Shorten links!</title>
 </head>
 <body>
+    {{> header }}
     <div class="page">
-        <!-- @include 'header.kit' -->
-
-    
-        
-        <!-- @include 'footer.kit' -->
-        
+        <h1 class="title">Stats</h1>
+        <section class="card stats">
+            <p class="stats__element">Redirect links: <span class="stats__bold">{{redirectLinks}}</span></p>
+            <p class="stats__element">Redirects: <span class="stats__bold">{{redirects}}</span></p>
+        </section>
     </div>
-        <script src="./dist/js/home.min.js" defer></script>
+    {{> footer }}
+    <script src="/dist/js/nav.min.js" defer></script>
+
     </body>
 </html>

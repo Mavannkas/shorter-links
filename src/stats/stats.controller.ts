@@ -3,6 +3,7 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
+  Render,
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
@@ -12,7 +13,11 @@ import { UsePermissions } from 'src/decorators/user-permissions.decorator';
 import { ForbiddenRedirectFilter } from 'src/filters/forbidden-redirect.filter';
 import { PermissionGuard } from 'src/guards/permission.guard';
 import { UserRole } from 'src/interfaces/role';
-import { RedirectLinkStatsResponse, StatsResponse } from 'src/interfaces/stats';
+import {
+  PublicStatsResponse,
+  RedirectLinkStatsResponse,
+  StatsResponse,
+} from 'src/interfaces/stats';
 import { User } from 'src/user/entity/user.entity';
 import { StatsService } from './stats.service';
 
@@ -39,6 +44,12 @@ export class StatsController {
   @UseFilters(new ForbiddenRedirectFilter())
   getAnonStats(): Promise<StatsResponse> {
     return this.statsService.getAnonStats();
+  }
+
+  @Get('public')
+  @Render('pages/stats')
+  getPublicStats(): Promise<PublicStatsResponse> {
+    return this.statsService.getPublicStats();
   }
 
   @Get(':id')

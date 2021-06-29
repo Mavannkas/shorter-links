@@ -8,3 +8,8 @@ export interface RedirectLinkStatsResponse {
   redirectLink: RedirectLinkResponse;
   redirectCount: number;
 }
+
+export interface PublicStatsResponse {
+  redirectLinks: number;
+  redirects: number;
+}
