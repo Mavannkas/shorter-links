@@ -25,13 +25,14 @@ html {
 }
 
 .error {
-  color: #f54748;
+  color: #ae00fb;
   font-size: 1.6rem;
+  text-align: center;
   margin-bottom: 2em;
 }
 
 .success {
-  color: $section;
+  color: #006800;
   font-size: 1.6rem;
   margin-bottom: 2em;
   text-align: center;
@@ -41,8 +42,8 @@ html {
   margin-top: 3em;
   text-align: center;
   font-size: 3rem;
-  font-weight: 200;
-  color: $section;
+  font-weight: normal;
+  color: $button;
 }
 
 @keyframes swing {
@@ -454,11 +455,11 @@ body {
     margin-bottom: 1em;
     border-radius: 10px;
     border-bottom: 3px solid $section;
-    transition: background-color .3s;
+    transition: border-color .3s;
     cursor: pointer;
 
     &:hover {
-      background-color: #fb930075;
+      border-bottom: 3px solid $button;
     }
 
     &[aria-expanded="true"] {
@@ -553,10 +554,10 @@ body {
     font-size: 1.6rem;
     border: none;
     border-bottom: 3px solid $section;
-    transition: background-color .3s;
+    transition: background .3s, border-color .3s;
 
     &:hover, &:focus, &:valid {
-      background-color: #fb930054;
+      border-bottom: 3px solid $button;
     }
 
     &:focus {
@@ -588,15 +589,14 @@ body {
   &__p {
     align-self: flex-start;
     margin-left: 1.2em;
-    
-    &:last-child {
-      align-self: center;
-    }
+    margin-top: 1em;
+    align-self: center;
   }
 
   &__link {
     text-decoration: none;
     color: $section;
+    font-weight: 700;
     transition: color .3s;
 
     &:hover {
