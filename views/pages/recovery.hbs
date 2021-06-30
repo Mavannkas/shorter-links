@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;700&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="/dist/css/main.min.css">
+    <script src="/dist/js/main.min.js"></script>
+    <title>Shorten links!</title>
+</head>
+<body>
+    {{> header }}
+    <div class="page">
+        <h1 class="title">Recovery password</h1>
+        <form method="POST" action="/main/auth/register" class="card card--small log-in">
+            <div class="log-in__box">
+                <label for="email" class="log-in__label">Email</label><input class="log-in__input" type="email" id="email" name="email" required placeholder="albus@dumbledore.net">
+            </div>
+            <button class="log-in__button" type="submit">Recovery password</button>
+            <p class="log-in__p">You are a member now? <a class="log-in__link" href="/main/auth/login">Sign in</a></p>
+        </form>
+    </div>
+    {{> footer }}
+    <script src="/dist/js/nav.min.js" defer></script>
+
+    </body>
+</html>

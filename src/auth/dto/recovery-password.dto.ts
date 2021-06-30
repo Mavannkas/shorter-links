@@ -6,7 +6,7 @@ export class RecoveryPasswordDto {
       'Password does not meet the requirements. 8 - 25 chars, 1 digit, 1 uppercase.',
   })
   password: string;
-  
+
   @IsString()
   password_repeat: string;
 }

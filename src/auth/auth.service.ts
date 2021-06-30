@@ -55,7 +55,6 @@ export class AuthService {
       user.name = registerData.name;
       user.password_hash = hashPassword(registerData.password);
       user.activation_hash = hashRandom();
-      user.roles.push(role);
 
       await this.sendMail(
         user,
@@ -64,9 +63,14 @@ export class AuthService {
 
       await user.save();
 
+      const tempUser = await this.userService.getUserById(user.user_id);
+      tempUser.roles.push(role);
+
+      await tempUser.save();
+
       return this.prepareUserResponse(user);
     } catch (err) {
-      throw new ForbiddenException('Registration failed');
+      throw new ForbiddenException(err.message ?? 'Registration failed');
     }
   }
 
@@ -116,7 +120,7 @@ export class AuthService {
     };
   }
 
-  async resendEmail(email: string): Promise<ResendResponse> {
+  async resendEmail({ email }): Promise<ResendResponse> {
     const user = await User.findOne({ email });
 
     if (user) {
@@ -154,12 +158,13 @@ export class AuthService {
           domain: 'localhost',
           httpOnly: true,
         })
-        .json({ ok: 1 });
+        .redirect('/main/user');
     } catch (error) {
-      return res.status(403).json({
-        statusCode: 403,
-        message: error.message,
-        error: 'Forbidden',
+      return res.status(403).render('pages/log-in', {
+        error: error.message,
+        body: {
+          email: loginData.email,
+        },
       });
     }
   }
@@ -233,7 +238,7 @@ export class AuthService {
     }
   }
 
-  async recoveryPassword(email: string): Promise<ResendResponse> {
+  async recoveryPassword({ email }): Promise<ResendResponse> {
     const user = await User.findOne({ email });
 
     if (user) {

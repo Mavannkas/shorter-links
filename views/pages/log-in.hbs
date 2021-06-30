@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;700&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="/dist/css/main.min.css">
+    <script src="/dist/js/main.min.js"></script>
+    <title>Shorten links!</title>
+</head>
+<body>
+    {{> header }}
+    <div class="page">
+        <h1 class="title">Login</h1>
+        <form method="POST" action="/main/auth/login" class="card card--small log-in">
+            {{#if error}}
+            <p class="error">{{error}}</p>
+            {{/if}}
+            <div class="log-in__box">    
+                <label for="email" class="log-in__label">Email</label><input class="log-in__input" type="email" id="email" value="{{#if body}}
+                {{body.email}}
+                {{/if}}" name="email" required placeholder="albus@dumbledore.net">
+            </div>
+            <div class="log-in__box">
+                <label for="password" class="log-in__label">Password</label><input class="log-in__input" type="password" id="password" name="password" required placeholder="ILoveCats72">
+            </div>
+            <button class="log-in__button" type="submit">Sign in</button>
+            <p class="log-in__p"><a class="log-in__link" href="/main/auth/recovery-password">Forgot password?</a></p>
+            <p class="log-in__p">Not a member yet? <a class="log-in__link" href="/main/auth/register">Sign up</a></p>
+        </form>
+    </div>
+    {{> footer }}
+    <script src="/dist/js/nav.min.js" defer></script>
+
+    </body>
+</html>
