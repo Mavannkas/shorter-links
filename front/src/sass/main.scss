@@ -24,6 +24,19 @@ html {
 	animation: swing 2s linear both;
 }
 
+.error {
+  color: #f54748;
+  font-size: 1.6rem;
+  margin-bottom: 2em;
+}
+
+.success {
+  color: $section;
+  font-size: 1.6rem;
+  margin-bottom: 2em;
+  text-align: center;
+}
+
 .title {
   margin-top: 3em;
   text-align: center;
@@ -424,7 +437,13 @@ body {
   font-size: 1.6rem;
   background-color: #fff;
   border-radius: 20px;
+
+  &--small {
+    max-width: 600px;
+  }
 }
+
+
 
 .faq {
   &__elements {
@@ -505,6 +524,84 @@ body {
   &__bold {
     font-weight: bold;
     color: $section;
+  }
+}
+
+.log-in {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 2em;
+  padding-bottom: 4em;
+  &__box {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+  }
+
+  &__label {
+    font-size: 2rem;
+    margin-bottom: .5em;
+  }
+
+  &__input {
+    width: 100%;
+    padding: .5em;
+    margin-bottom: 1em;
+    border-radius: 10px;
+    font-size: 1.6rem;
+    border: none;
+    border-bottom: 3px solid $section;
+    transition: background-color .3s;
+
+    &:hover, &:focus, &:valid {
+      background-color: #fb930054;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+  }
+
+  &__button {
+    width: 90%;
+    margin-top: 1.2em;
+    margin-bottom: 2em;
+    padding: .5em 1em;
+    font-size: 1.6rem;
+    border: none;
+    border-radius: 20px;
+    background: $section;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    transition: color .3s, transform .3s, background-color .3s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $button;
+      color: $background;
+      transform: translateY(-5px)
+    }
+  }
+
+  &__p {
+    align-self: flex-start;
+    margin-left: 1.2em;
+    
+    &:last-child {
+      align-self: center;
+    }
+  }
+
+  &__link {
+    text-decoration: none;
+    color: $section;
+    transition: color .3s;
+
+    &:hover {
+      color: $hover;
+    }
   }
 }
 
