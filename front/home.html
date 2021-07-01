@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&family=Raleway:wght@200;400;700&display=swap" rel="stylesheet"> 
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <link rel="stylesheet" href="./dist/css/panel/panel.min.css">
+    <script src="./dist/js/main.min.js"></script>
+    <title>User Panel</title>
+</head>
+<body>
+    <aside>
+    <nav class="nav">
+        <ul class="nav__list">
+            <li class="nav__element">
+                <a class="nav__link">
+                    <span class="nav__logo-svg">
+                        <img class="icon icon-tabler icon-tabler-scissors" src="./dist/img/icons/gray_scissors.svg" alt="">
+                    </span>
+                    <span class="nav__logo-text">Shorten link</span>
+                </a>
+            </li>
+            <li tabindex="1" class="nav__element nav__element--active">
+                <a class="nav__link nav__link--hover">
+                    <div class="nav__link-decor nav__link-decor--top"></div>
+                    <div class="nav__link-decor nav__link-decor--bottom"></div>
+                    <span class="nav__link-icon"><ion-icon name="home-outline"></ion-icon></span>
+                    <span class="nav__link-title">Home</span>
+                </a>
+            </li>
+            <li tabindex="2" class="nav__element">
+                <a class="nav__link nav__link--hover">
+                    <div class="nav__link-decor nav__link-decor--top"></div>
+                    <div class="nav__link-decor nav__link-decor--bottom"></div>
+                    <span class="nav__link-icon"><ion-icon name="link-outline"></ion-icon></span>
+                    <span class="nav__link-title">Redirects</span>
+                </a>
+            </li>
+            <li tabindex="3" class="nav__element">
+                <a class="nav__link nav__link--hover">
+                    <div class="nav__link-decor nav__link-decor--top"></div>
+                    <div class="nav__link-decor nav__link-decor--bottom"></div>
+                    <span class="nav__link-icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
+                    <span class="nav__link-title">Stats</span>
+                </a>
+            </li>
+            <li tabindex="4" class="nav__element">
+                <a class="nav__link nav__link--hover">
+                    <div class="nav__link-decor nav__link-decor--top"></div>
+                    <div class="nav__link-decor nav__link-decor--bottom"></div>
+                    <span class="nav__link-icon"><ion-icon name="person-outline"></ion-icon></span>
+                    <span class="nav__link-title">Profile</span>
+                </a>
+            </li>
+            <li tabindex="5" class="nav__element">
+                <a class="nav__link  nav__link--hover">
+                    <div class="nav__link-decor nav__link-decor--top"></div>
+                    <div class="nav__link-decor nav__link-decor--bottom"></div>
+                    <span class="nav__link-icon"><ion-icon name="log-out-outline"></ion-icon></span>
+                    <span class="nav__link-title">Log out</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <script src="./dist/js/home-nav.min.js" defer></script>
+</aside>
+
+<div tabindex="6" class="nav__toggle">
+    <ion-icon name="menu"></ion-icon>
+    <ion-icon name="close-outline"></ion-icon>
+</div>    <main class="main"></main>
+</body>
+</html>

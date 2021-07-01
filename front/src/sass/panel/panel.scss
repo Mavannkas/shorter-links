@@ -1,0 +1,233 @@
+@import '../colors';
+@import '../mixins';
+
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    @include Raleway_Font;
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh; 
+    background: $background;
+}
+
+
+.nav {
+    position: fixed;
+    // top: 20px;
+    // left: 20px;
+    // bottom: 20px;
+    top: 0;
+    left: -70px;
+    bottom: 0;
+    width: 70px;
+    @include Poppins_Font;
+    font-size: 1.6rem;
+    // border-radius: 10px;
+    border-left: 5px solid $section;
+    background: $section;
+    overflow: hidden;
+    transition: width .5s, left .5s;
+
+    &--active {
+        max-width: 300px;
+        width: 80%;;
+        left: 0;
+    }
+
+    &__list {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding-top: 2em;
+    }
+
+    &__element {
+        position: relative;
+        list-style: none;
+        width: 100%;
+        border: 1px solid transparent;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+        cursor: pointer;
+
+        &:first-child {
+            margin-bottom: 1em;
+        }
+
+        &--active {
+            background-color: $background;
+
+            .nav__link-decor {
+                opacity: 1;
+            }
+        }
+        
+        &:focus, &:hover {
+            .nav__link.nav__link--hover {
+                font-size: 2rem;
+            }
+
+            outline: none;
+        }
+    }
+
+    &__logo {
+        &-svg {
+            position: relative;
+            display: block;
+            min-width: 60px;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+
+            .icon {
+                transform: scale(3);
+            }
+        }
+
+        &-text {
+            font-size: 2.5rem;
+            line-height: 60px;
+            white-space: nowrap;    
+        }
+    }
+
+    &__link {
+        position: relative;
+        display: flex;
+        width: 100%;
+        text-decoration: none;
+        color: $button;
+        transition: font-size .3s;
+
+        &-icon {
+            position: relative;
+            display: block;
+            min-width: 60px;
+            height: 60px;
+            line-height: 70px;
+            text-align: center;
+
+            ion-icon {
+                font-size: 1.5em;
+            }
+        }
+
+        &-title {
+            position: relative;
+            display: block;
+            padding-left: 1em;
+            height: 60px;
+            line-height: 60px;
+            white-space: nowrap;
+        }
+
+        &-decor {
+            position: absolute;
+            height: 20px;
+            width: 100%;
+            right: -1px;
+            opacity: 0;
+            background-color: $background;
+            pointer-events: none;
+            
+            &::before {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: $section;
+                content: '';
+            }
+
+            &--top {
+                top: -21px;
+                
+                &::before {
+                    border-bottom-right-radius: 20px;
+                }
+            }
+
+            &--bottom {
+                bottom: -21px;
+
+                &::before {
+                    border-top-right-radius: 20px;
+                }
+            }
+        }
+    }
+
+    &__toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $section;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        cursor: pointer;
+
+        &:focus, &:hover {
+            ion-icon {
+                font-size: 4.2rem;
+            }
+
+            outline: none;
+        }
+
+        &--active {
+            background-color: #F54748;
+
+            ion-icon:first-child {
+                display: none !important;
+            }
+
+            ion-icon:last-child {
+                display: block !important;
+            }
+        }
+
+        ion-icon {
+            position: absolute;
+            color: $button;
+            font-size: 3.4rem;
+            transition: font-size .3s;
+
+            &:first-child {
+                display: block;
+            }
+
+            &:last-child {
+                display: none;
+            }
+        }
+    }
+}
+
+.main {
+    width: calc( 100% - 70px );
+    margin-left: 70px;
+    background-color: white;
+    min-height: 100vh;
+}
+
+@import './small';
+@import './medium';
+@import './large';

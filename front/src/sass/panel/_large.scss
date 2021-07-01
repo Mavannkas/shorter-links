@@ -1,0 +1,15 @@
+@media(min-width: 992px) {
+    .nav {
+        // top: 20px;
+        left: 0px;
+        // bottom: 20px;
+
+        &--active {
+            width: 300px;
+        }
+    
+        &__list {
+            padding-left: .5em;
+        }
+    }
+}

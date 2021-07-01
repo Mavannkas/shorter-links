@@ -95,7 +95,6 @@ html {
 
 body {
   min-height: 100vh; 
-  
   display: grid;
   grid-template-rows: auto 1fr auto;
   background: $background;
@@ -123,13 +122,13 @@ body {
         padding-left: 2em;
         &-svg {
             margin: 0 1.7em;
-            transform: scale(2.5);
+            transform: scale(2.7);
             transform-origin: top;
         }
 
         &-text {
             padding: 0 .5em .5em 0;
-            font-size: 2rem;
+            font-size: 2.3rem;
             font-weight: bold;
             color: $button;
             text-decoration: none;
@@ -144,7 +143,7 @@ body {
     .burger{
         position: fixed;
         right: 10px;
-        top: 10px;
+        top: -3px;
         padding: 1.5em;
         background-color: transparent;
         border: 2px solid transparent;
