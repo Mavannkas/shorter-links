@@ -7,8 +7,11 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import * as hbs from 'hbs';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    cors: true,
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.enableCors({
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
   });
   app.use(cookieParser());
 

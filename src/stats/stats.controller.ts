@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseIntPipe,
   ParseUUIDPipe,
   Render,
   UseFilters,
@@ -14,6 +15,7 @@ import { ForbiddenRedirectFilter } from 'src/filters/forbidden-redirect.filter';
 import { PermissionGuard } from 'src/guards/permission.guard';
 import { UserRole } from 'src/interfaces/role';
 import {
+  DaysStatsResponse,
   PublicStatsResponse,
   RedirectLinkStatsResponse,
   StatsResponse,
@@ -29,6 +31,15 @@ export class StatsController {
   @UseGuards(AuthGuard('jwt'))
   getStats(@UserObj() user: User): Promise<StatsResponse> {
     return this.statsService.getStats(user);
+  }
+
+  @Get('last/days/:days')
+  @UseGuards(AuthGuard('jwt'))
+  getLastDaysStats(
+    @UserObj() user: User,
+    @Param('days', new ParseIntPipe()) days: number,
+  ): Promise<DaysStatsResponse[]> {
+    return this.statsService.getLastDaysStats(user, days);
   }
 
   @Get('all')

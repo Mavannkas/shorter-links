@@ -74,7 +74,7 @@ export class AuthService {
     }
   }
 
-  async sendMail({ email, name }, url, template = 'activate') {
+  async sendMail({ email, name }, url: string, template = 'activate') {
     await this.mailService.sendMail(
       email,
       {
@@ -115,8 +115,7 @@ export class AuthService {
     await user.save();
 
     return {
-      user: this.prepareUserActiveResponse(user),
-      message: 'Activation success',
+      ok: 'Activation success',
     };
   }
 
@@ -228,7 +227,7 @@ export class AuthService {
         httpOnly: true,
       });
 
-      return res.json({ ok: 1 });
+      return res.render('pages/log-in', { ok: 'Successfully logged out' });
     } catch (error) {
       return res.status(403).json({
         statusCode: 403,
@@ -254,7 +253,7 @@ export class AuthService {
     }
 
     return {
-      message: `Email with change password link has send on ${email}`,
+      message: `Email with change password link has send on <strong>${email}</strong>`,
     };
   }
 

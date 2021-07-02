@@ -6,11 +6,15 @@ import { ActiveMailBody } from 'src/interfaces/mail';
 export class MailService {
   constructor(private readonly mailerService: MailerService) {}
 
-  async sendMail(to: string, body: ActiveMailBody, template): Promise<any> {
+  async sendMail(
+    to: string,
+    body: ActiveMailBody,
+    template?: string,
+  ): Promise<any> {
     await this.mailerService.sendMail({
       to,
       subject: `Hi, ${body.name}`,
-      template: 'activation',
+      template,
       context: body,
     });
   }

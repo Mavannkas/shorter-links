@@ -15,7 +15,13 @@
     {{> header }}
     <div class="page">
         <h1 class="title">Recovery password</h1>
-        <form method="POST" action="/main/auth/register" class="card card--small log-in">
+        <form method="POST" action="/main/auth/recovery-password" class="card card--small log-in">
+            {{#if error}}
+                <p class="error">{{error}}</p>
+            {{/if}}
+            {{#if message}}
+                <p class="success">{{{message}}}</p>
+            {{/if}}
             <div class="log-in__box">
                 <label for="email" class="log-in__label">Email</label><input class="log-in__input" type="email" id="email" name="email" required placeholder="albus@dumbledore.net">
             </div>

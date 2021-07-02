@@ -12,8 +12,7 @@ export interface UserActiveResponse {
 }
 
 export type VerifyResponse = {
-  user: UserActiveResponse;
-  message: string;
+  ok: string;
 };
 
 export interface ResendResponse {

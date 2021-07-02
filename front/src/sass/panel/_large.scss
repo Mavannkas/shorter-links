@@ -12,4 +12,36 @@
             padding-left: .5em;
         }
     }
+
+    .main {
+        width: calc( 100% - 70px );
+        margin-left: 70px;
+
+        .wrapper {
+            grid-template-columns: repeat(2, minmax(300px, 1fr));
+        }
+
+        &__card {
+            &--img {
+                max-height: 300px;
+            }
+        }
+
+        &__form {
+            justify-content: space-between;
+            flex-direction: row;
+        }
+
+        &__input {
+            &-box {
+                text-align: left;
+                width: 60%;
+                margin-bottom: 0;
+            }
+        }
+
+        &__button {
+            width: 20%;
+        }
+    }
 }

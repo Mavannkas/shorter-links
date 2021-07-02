@@ -20,14 +20,11 @@ import { AuthService } from './auth.service';
 import { registerUserDto } from './dto/register-user.dto';
 import { Response } from 'express';
 import { AuthLoginDto } from './dto/auth.login.dto';
-
-import { MyAuthGuard } from 'src/guards/my-auth.guard';
 import { TokenObj } from 'src/decorators/token-obj.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { Token } from './entity/token.entity';
 import { ForbiddenRedirectFilter } from 'src/filters/forbidden-redirect.filter';
 import { UserNotLoginGuard } from 'src/guards/user-not-login.guard';
-import { CheckEmailPipe } from 'src/pipes/check-email.pipe';
 import { RecoveryPasswordDto } from './dto/recovery-password.dto';
 import { ResendEmailDto } from './dto/resend-email.dto';
 import { RecoveryPasswordEmailDto } from './dto/recovery-password-email.dto';
@@ -66,8 +63,8 @@ export class AuthController {
 
   @Post('login')
   @UseFilters(
-    new ForbiddenRedirectFilter('/main/user'),
     new PipeResponseFilter('log-in'),
+    new ForbiddenRedirectFilter('/main/user'),
   )
   @UseGuards(new UserNotLoginGuard())
   loginUser(
@@ -87,7 +84,11 @@ export class AuthController {
 
   @Get('verify/:hash')
   @UseGuards(new UserNotLoginGuard())
-  @UseFilters(new ForbiddenRedirectFilter('/main/user'))
+  @UseFilters(
+    new PipeResponseFilter('log-in'),
+    new ForbiddenRedirectFilter('/main/user'),
+  )
+  @Render('pages/log-in')
   verifyEmail(@Param('hash') hash: string): Promise<VerifyResponse> {
     return this.authService.verifyEmail(hash);
   }
@@ -102,7 +103,11 @@ export class AuthController {
 
   @Post('resend-email')
   @UseGuards(new UserNotLoginGuard())
-  @UseFilters(new ForbiddenRedirectFilter('/main/user'))
+  @UseFilters(
+    new PipeResponseFilter('resend-email'),
+    new ForbiddenRedirectFilter('/main/user'),
+  )
+  @Render('pages/resend-email')
   resendEmail(@Body() email: ResendEmailDto): Promise<ResendResponse> {
     return this.authService.resendEmail(email);
   }
@@ -117,7 +122,11 @@ export class AuthController {
 
   @Post('recovery-password')
   @UseGuards(new UserNotLoginGuard())
-  @UseFilters(new ForbiddenRedirectFilter('/main/user'))
+  @UseFilters(
+    new PipeResponseFilter('recovery'),
+    new ForbiddenRedirectFilter('/main/user'),
+  )
+  @Render('pages/recovery')
   recoveryPassword(
     @Body() email: RecoveryPasswordEmailDto,
   ): Promise<ResendResponse> {
@@ -133,7 +142,12 @@ export class AuthController {
   }
 
   @Post('change-password/:hash')
+  @UseFilters(
+    new PipeResponseFilter('change-password'),
+    new ForbiddenRedirectFilter('/main/user'),
+  )
   @UseGuards(new UserNotLoginGuard())
+  @Render('pages/change-password')
   changePassword(
     @Param('hash') hash: string,
     @Body() password: RecoveryPasswordDto,

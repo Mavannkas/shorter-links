@@ -67,12 +67,38 @@
             </li>
         </ul>
     </nav>
-    <script src="./dist/js/home-nav.min.js" defer></script>
 </aside>
 
 <div tabindex="6" class="nav__toggle">
     <ion-icon name="menu"></ion-icon>
     <ion-icon name="close-outline"></ion-icon>
-</div>    <main class="main"></main>
+</div>    <main class="main">
+        <div class="wrapper">
+            <div class="main__card main__card--main">
+                <form class="main__form">
+                    <div class="main__input-box">
+                        <label for="url" class="main__input-label">Enter your link</label>
+                        <input type="text" class="main__input" id="url" placeholder="https://http.cat/" required>
+                        <div class="main__custom-box">
+                          <label for="custom-url" class="main__input-label">Custom url http://localhost:3000/</label>
+                          <input type="text" class="main__input" id="custom-url" placeholder="i-love-cats" required>
+                        </div>
+                    </div>
+                    <button class="main__button" type="button">
+                        Shorten
+                    </button>
+                </form>
+                <div class="main__error"></div>
+            </div>
+            <div class="main__card main__card--chart"><canvas id="myChart"></canvas></div>
+            <img src="https://cataas.com/cat?width=500" class="main__card main__card--img"></img>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./dist/js/panel.min.js" defer></script>
+
+    <script>
+      
+    </script>
 </body>
 </html>

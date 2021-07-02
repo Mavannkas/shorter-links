@@ -3,6 +3,10 @@ import { RedirectLinkResponse } from './redirect-link';
 export interface StatsResponse {
   redirectCount: number;
 }
+export interface DaysStatsResponse {
+  day: number;
+  redirectCount: number;
+}
 
 export interface RedirectLinkStatsResponse {
   redirectLink: RedirectLinkResponse;

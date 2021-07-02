@@ -19,6 +19,9 @@
             {{#if error}}
             <p class="error">{{error}}</p>
             {{/if}}
+            {{#if ok}}
+            <p class="success"><strong>{{ok}}</strong></p>
+            {{/if}}
             <div class="log-in__box">    
                 <label for="email" class="log-in__label">Email</label><input class="log-in__input" type="email" id="email" value="{{#if body}}
                 {{body.email}}

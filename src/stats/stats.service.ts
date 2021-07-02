@@ -1,6 +1,7 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 
 import {
+  DaysStatsResponse,
   PublicStatsResponse,
   RedirectLinkStatsResponse,
   StatsResponse,
@@ -55,6 +56,35 @@ export class StatsService {
       })
       .getCount();
     return { redirectCount };
+  }
+
+  async getLastDaysStats(
+    user: User,
+    days: number,
+  ): Promise<DaysStatsResponse[]> {
+    const result = await getConnection()
+      .createQueryBuilder()
+      .select([
+        'DATE(redirectLog.created_at) as date',
+        'COUNT(redirectLog.redirect_link_id) as redirectCount',
+      ])
+      .from(RedirectLog, 'redirectLog')
+      .leftJoinAndSelect('redirectLog.redirect_link_id', 'redirect_link_id')
+      .leftJoinAndSelect('redirect_link_id.user_id', 'user_id')
+      .where('user_id.user_id = :id', {
+        id: '46f48f23-70c3-49b1-83d6-e038bbb3ec25', //user.user_id,
+      })
+      .andWhere('redirectLog.created_at >= DATE(NOW()) - INTERVAL :days DAY', {
+        days,
+      })
+      .groupBy('DAY(redirectLog.created_at)')
+      .orderBy('redirectLog.created_at')
+      .getRawMany();
+
+    return result.map((item) => ({
+      day: item.date,
+      redirectCount: item.redirectCount,
+    }));
   }
 
   async getAllStats(): Promise<StatsResponse> {
