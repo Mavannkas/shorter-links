@@ -1,5 +1,6 @@
 @import '../colors';
 @import '../mixins';
+@import '../animations';
 
 *,
 *::after,
@@ -20,6 +21,35 @@ body {
     background: $background;
 }
 
+aside {
+    position: relative;
+    z-index: 2;
+}
+
+.button {
+    position: relative;
+    width: 100%;
+    height: 40%;
+    padding: .5em 1em;
+    font-size: 2rem;
+    border: none;
+    border-radius: 20px;
+    background: $section;
+    transition: color .3s, transform .3s, background-color .3s, font-size .3s;
+    cursor: pointer;
+    overflow: hidden;
+
+    &:hover {
+      background-color: $button;
+      color: $background;
+      transform: translateY(-5px)
+    }
+
+    &:focus {
+        outline: none;
+        font-size: 2.2rem;
+    }
+}
 
 .nav {
     position: fixed;
@@ -180,7 +210,7 @@ body {
         border: 1px solid transparent;
         border-radius: 10px;
         cursor: pointer;
-
+        z-index: 1;
         &:focus, &:hover {
             ion-icon {
                 font-size: 4.2rem;
@@ -236,6 +266,12 @@ body {
         border-radius: 40px;
         background-color: white;
         
+        &-header {
+            margin-bottom: 1em;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
         &--main {
             grid-column: 1/-1;
             display: flex;
@@ -253,6 +289,11 @@ body {
         &--img {
             width: 100%;
             object-fit: cover;
+        }
+
+        &--table {
+            grid-column: 1/-1;
+            padding: 2em;
         }
     }
 
@@ -299,41 +340,117 @@ body {
 
 
     &__custom-box {
-        font-size: 1rem;
+        font-size: 1.1rem;
 
         input {
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
     }
 
     &__button {
-        width: 100%;
-        height: 40%;
-        padding: .5em 1em;
-        font-size: 2rem;
-        border: none;
-        border-radius: 20px;
-        background: $section;
-        transition: color .3s, transform .3s, background-color .3s, font-size .3s;
-        cursor: pointer;
-        
-        &:hover {
-          background-color: $button;
-          color: $background;
-          transform: translateY(-5px)
-        }
-
-        &:focus {
-            outline: none;
-            font-size: 2.2rem;
+        &--waiter span{
+            animation: blink 2s infinite;
         }
     }
 
     &__error {
-        margin-top: 2em;
+        margin: 2em 0 1em;
         color: #ae00fb;
     }
 
+}
+
+.copy {
+    &--copied {
+        &::before {
+            opacity: 1 !important;
+        }
+    }
+
+    &::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: green;
+        content: 'Copied!';
+        opacity: 0;
+        transition: opacity .3s;
+    }
+}
+
+.table {
+    width: 100%;
+    font-size: 1.6rem;
+    table-layout:fixed;
+    &__head {
+        display: none;
+    }
+
+    &__row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: .5em;
+        transition: background-color .3s;
+
+        &:hover {
+            background-color: rgb(241, 241, 241);
+        }
+
+        &:nth-child(2n) {
+            background-color: rgb(241, 241, 241);
+        }
+    }
+
+    &__cell {
+        display: block;
+        width: 99%;
+        text-align: center;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        &:first-child {
+            margin-top: 1em;
+        }
+
+        &:nth-child(2) {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin: 1em 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: $section;
+            font-weight: 700;
+            transition: color .3s;
+        
+            &:hover {
+              color: $hover;
+            }
+        }
+
+        .button {
+            width: 100px;
+            height: 40px;
+            margin-top: 1em;
+            padding: .5em 2em;
+            font-size: 1.6rem;
+
+            &:hover {
+                transform: none;
+            }
+        }
+    }
 }
 
 @import './small';

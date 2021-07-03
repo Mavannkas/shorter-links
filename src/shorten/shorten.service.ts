@@ -24,12 +24,13 @@ export class ShortenService {
     createNewRedirectData: CreateNewRedirectLinkDto,
     user?: User,
   ): Promise<createNewRedirectResponse> {
-    await this.checkIfSourceExists(createNewRedirectData.source);
+    // await this.checkIfSourceExists(createNewRedirectData.source);
 
     const newRedirect = await this.buildRedirect(createNewRedirectData, user);
     await newRedirect.save();
 
     return {
+      source: createNewRedirectData.source,
       redirectLink: newRedirect.redirect_link,
     };
   }
@@ -101,6 +102,9 @@ export class ShortenService {
           user_id: user.user_id,
         },
       ],
+      order: {  
+        created_at: 'DESC',
+      },
     });
 
     const lastPage = Math.ceil(count / limit);

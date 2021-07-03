@@ -12,6 +12,7 @@ export interface RedirectLinkInterface {
 }
 
 export interface createNewRedirectResponse {
+  source: string;
   redirectLink: string;
 }
 

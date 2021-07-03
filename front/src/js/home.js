@@ -97,4 +97,3 @@ backInput.addEventListener('click', async () => {
   output.innerText = 'Copied to the clipboard';
   output.classList.add('create__info--success');
 });
-

@@ -72,7 +72,7 @@ export class StatsService {
       .leftJoinAndSelect('redirectLog.redirect_link_id', 'redirect_link_id')
       .leftJoinAndSelect('redirect_link_id.user_id', 'user_id')
       .where('user_id.user_id = :id', {
-        id: '46f48f23-70c3-49b1-83d6-e038bbb3ec25', //user.user_id,
+        id: user.user_id,
       })
       .andWhere('redirectLog.created_at >= DATE(NOW()) - INTERVAL :days DAY', {
         days,

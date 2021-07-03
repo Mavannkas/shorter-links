@@ -18,6 +18,7 @@
     <main class="main">
         <div class="wrapper">
             <div class="main__card main__card--main">
+                <h3 class="main__card-header">Create new redirect</h3>
                 <form class="main__form">
                     <div class="main__input-box">
                         <label for="url" class="main__input-label">Enter your link</label>
@@ -27,14 +28,27 @@
                           <input type="text" class="main__input" id="custom-url" placeholder="i-love-cats" required>
                         </div>
                     </div>
-                    <button class="main__button" type="button">
-                        Shorten
+                    <button class="button main__button copy" type="button">
+                        <span>Shorten</span>
                     </button>
                 </form>
                 <div class="main__error"></div>
             </div>
             <div class="main__card main__card--chart"><canvas id="myChart"></canvas></div>
             <img src="https://cataas.com/cat?width=500" class="main__card main__card--img"></img>
+
+            <div class="main__card main__card--table">
+                <h3 class="main__card-header">Last 5 created link</h3>
+                <table class="table" id="links">
+                    <thead class="table__head">
+                        <tr class="table__row">
+                            <th class="table__cell">Source</th>
+                            <th class="table__cell">Shortened</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table__body"></tbody>
+                </table>
+            </div>
         </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

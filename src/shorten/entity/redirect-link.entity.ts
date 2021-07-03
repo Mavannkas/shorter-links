@@ -52,7 +52,7 @@ export class RedirectLink extends BaseEntity implements RedirectLinkInterface {
   @BeforeUpdate()
   generateRedirectLink(): void {
     if (this.id) {
-      this.redirect_link = `localhost:3000/${this.id}`;
+      this.redirect_link = `http://localhost:3000/${this.id}`;
     } else {
       this.redirect_link = null;
     }
