@@ -1,0 +1,67 @@
+<aside>
+    <nav class="nav">
+        <ul class="nav__list">
+            <li class="nav__element">
+                <a href="http://localhost:8080" class="nav__link">
+                    <span class="nav__logo-svg">
+                        <img class="icon icon-tabler icon-tabler-scissors" src="/dist/img/icons/gray_scissors.svg" alt="">
+                    </span>
+                    <span class="nav__logo-text">Shorten link</span>
+                </a>
+            </li>
+            <li tabindex="0" class="nav__element {{#ifEquals subPage "Home"}}nav__element--active{{/ifEquals}}">
+                <a href="/main/user" class="nav__link nav__link--hover">
+                    <div class="nav__link-decor nav__link-decor--top"></div>
+                    <div class="nav__link-decor nav__link-decor--bottom"></div>
+                    <span class="nav__link-icon"><ion-icon name="home-outline"></ion-icon></span>
+                    <span class="nav__link-title">Home</span>
+                </a>
+            </li>
+            <li tabindex="0" class="nav__element {{#ifEquals subPage "Redirects"}}nav__element--active{{/ifEquals}}">
+                <a href="/main/user/redirects" class="nav__link nav__link--hover">
+                    <div class="nav__link-decor nav__link-decor--top"></div>
+                    <div class="nav__link-decor nav__link-decor--bottom"></div>
+                    <span class="nav__link-icon"><ion-icon name="link-outline"></ion-icon></span>
+                    <span class="nav__link-title">Redirects</span>
+                </a>
+            </li>
+            <li tabindex="0" class="nav__element {{#ifEquals subPage "Stats"}}nav__element--active{{/ifEquals}}">
+                <a href="/main/user/stats" class="nav__link nav__link--hover">
+                    <div class="nav__link-decor nav__link-decor--top"></div>
+                    <div class="nav__link-decor nav__link-decor--bottom"></div>
+                    <span class="nav__link-icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
+                    <span class="nav__link-title">Stats</span>
+                </a>
+            </li>
+            <li tabindex="0" class="nav__element {{#ifEquals subPage "Profile"}}nav__element--active{{/ifEquals}}">
+                <a href="/main/user/profile" class="nav__link nav__link--hover">
+                    <div class="nav__link-decor nav__link-decor--top"></div>
+                    <div class="nav__link-decor nav__link-decor--bottom"></div>
+                    <span class="nav__link-icon"><ion-icon name="person-outline"></ion-icon></span>
+                    <span class="nav__link-title">Profile</span>
+                </a>
+            </li>
+            <li class="nav__element">
+                <a class="nav__link nav__link--hover">
+                    <div class="nav__link-decor nav__link-decor--top"></div>
+                    <div class="nav__link-decor nav__link-decor--bottom"></div>
+                    <span class="nav__link-icon"></span>
+                    <span class="nav__link-title"></span>
+                </a>
+            </li>
+            <li tabindex="0" class="nav__element">
+                <a href="/main/auth/logout" class="nav__link  nav__link--hover">
+                    <div class="nav__link-decor nav__link-decor--top"></div>
+                    <div class="nav__link-decor nav__link-decor--bottom"></div>
+                    <span class="nav__link-icon"><ion-icon name="log-out-outline"></ion-icon></span>
+                    <span class="nav__link-title">Log out</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</aside>
+
+<div tabindex="0" class="nav__toggle">
+    <ion-icon name="menu"></ion-icon>
+    <ion-icon name="close-outline"></ion-icon>
+</div>

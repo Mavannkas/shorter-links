@@ -9,8 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&family=Raleway:wght@200;400;700&display=swap" rel="stylesheet"> 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <link rel="stylesheet" href="./dist/css/panel/panel.min.css">
-    <script src="./dist/js/main.min.js"></script>
+    <link rel="stylesheet" href="/dist/css/panel/panel.min.css">
+    <script src="/dist/js/main.min.js"></script>
     <title>User Panel</title>
 </head>
 <body>
@@ -20,13 +20,13 @@
             <li class="nav__element">
                 <a href="http://localhost:8080" class="nav__link">
                     <span class="nav__logo-svg">
-                        <img class="icon icon-tabler icon-tabler-scissors" src="./dist/img/icons/gray_scissors.svg" alt="">
+                        <img class="icon icon-tabler icon-tabler-scissors" src="/dist/img/icons/gray_scissors.svg" alt="">
                     </span>
                     <span class="nav__logo-text">Shorten link</span>
                 </a>
             </li>
             <li tabindex="0" class="nav__element nav__element--active">
-                <a class="nav__link nav__link--hover">
+                <a href="/panel/home.html" class="nav__link nav__link--hover">
                     <div class="nav__link-decor nav__link-decor--top"></div>
                     <div class="nav__link-decor nav__link-decor--bottom"></div>
                     <span class="nav__link-icon"><ion-icon name="home-outline"></ion-icon></span>
@@ -34,7 +34,7 @@
                 </a>
             </li>
             <li tabindex="0" class="nav__element">
-                <a class="nav__link nav__link--hover">
+                <a href="/panel/redirects.html" class="nav__link nav__link--hover">
                     <div class="nav__link-decor nav__link-decor--top"></div>
                     <div class="nav__link-decor nav__link-decor--bottom"></div>
                     <span class="nav__link-icon"><ion-icon name="link-outline"></ion-icon></span>
@@ -42,7 +42,7 @@
                 </a>
             </li>
             <li tabindex="0" class="nav__element">
-                <a class="nav__link nav__link--hover">
+                <a href="/panel/stats.html" class="nav__link nav__link--hover">
                     <div class="nav__link-decor nav__link-decor--top"></div>
                     <div class="nav__link-decor nav__link-decor--bottom"></div>
                     <span class="nav__link-icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
@@ -50,7 +50,7 @@
                 </a>
             </li>
             <li tabindex="0" class="nav__element">
-                <a class="nav__link nav__link--hover">
+                <a href="/panel/profile.html" class="nav__link nav__link--hover">
                     <div class="nav__link-decor nav__link-decor--top"></div>
                     <div class="nav__link-decor nav__link-decor--bottom"></div>
                     <span class="nav__link-icon"><ion-icon name="person-outline"></ion-icon></span>
@@ -109,6 +109,6 @@
         </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-    <script src="./dist/js/panel.min.js" defer></script>
+    <script src="/dist/js/panel.min.js" defer></script>
 </body>
 </html>

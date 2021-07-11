@@ -18,6 +18,9 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   hbs.registerPartials(join(__dirname, '..', 'views/partials'));
+  hbs.registerHelper('ifEquals', (arg1, arg2, options) =>
+    arg1 == arg2 ? options.fn(this) : options.inverse(this),
+  );
   app.setViewEngine('hbs');
   app.set('view options', {
     layout: 'layouts/index',

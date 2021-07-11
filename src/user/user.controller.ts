@@ -7,6 +7,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Render,
   Res,
   UseFilters,
   UseGuards,
@@ -20,6 +21,7 @@ import { TokenResponse } from 'src/interfaces/auth';
 import {
   DeleteSessionResponse,
   DeleteUserResponse,
+  PanelResponse,
   PasswordChangeResponse,
   RolesResponse,
 } from 'src/interfaces/user';
@@ -35,8 +37,41 @@ export class UserController {
   @Get('')
   @UseGuards(AuthGuard('jwt'))
   @UseFilters(new ForbiddenRedirectFilter())
-  async test() {
-    return 'hello';
+  @Render('pages/panel/home')
+  getHome(): PanelResponse {
+    return {
+      subPage: 'Home',
+    };
+  }
+
+  @Get('redirects')
+  @UseGuards(AuthGuard('jwt'))
+  @UseFilters(new ForbiddenRedirectFilter())
+  @Render('pages/panel/redirects')
+  getRedirects(): PanelResponse {
+    return {
+      subPage: 'Redirects',
+    };
+  }
+
+  @Get('stats')
+  @UseGuards(AuthGuard('jwt'))
+  @UseFilters(new ForbiddenRedirectFilter())
+  @Render('pages/panel/stats')
+  getStats(): PanelResponse {
+    return {
+      subPage: 'Stats',
+    };
+  }
+
+  @Get('profile')
+  @UseGuards(AuthGuard('jwt'))
+  @UseFilters(new ForbiddenRedirectFilter())
+  @Render('pages/panel/profile')
+  getProfile(): PanelResponse {
+    return {
+      subPage: 'Profile',
+    };
   }
 
   @Delete('')

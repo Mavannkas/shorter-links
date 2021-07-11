@@ -28,3 +28,7 @@ export interface DeleteSessionResponse {
 export interface PasswordChangeResponse {
   ok: string;
 }
+
+export interface PanelResponse {
+  subPage: string;
+}

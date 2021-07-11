@@ -9,9 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&family=Raleway:wght@200;400;700&display=swap" rel="stylesheet"> 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <link rel="stylesheet" href="./dist/css/panel/panel.min.css">
-    <script src="./dist/js/main.min.js"></script>
-    <title>User Panel</title>
+    <link rel="stylesheet" href="/dist/css/panel/panel.min.css">
+    <script src="/dist/js/main.min.js"></script>
+    <title>Redirects Panel</title>
 </head>
 <body>
     <aside>
@@ -20,13 +20,13 @@
             <li class="nav__element">
                 <a href="http://localhost:8080" class="nav__link">
                     <span class="nav__logo-svg">
-                        <img class="icon icon-tabler icon-tabler-scissors" src="./dist/img/icons/gray_scissors.svg" alt="">
+                        <img class="icon icon-tabler icon-tabler-scissors" src="/dist/img/icons/gray_scissors.svg" alt="">
                     </span>
                     <span class="nav__logo-text">Shorten link</span>
                 </a>
             </li>
             <li tabindex="0" class="nav__element nav__element--active">
-                <a class="nav__link nav__link--hover">
+                <a href="/panel/home.html" class="nav__link nav__link--hover">
                     <div class="nav__link-decor nav__link-decor--top"></div>
                     <div class="nav__link-decor nav__link-decor--bottom"></div>
                     <span class="nav__link-icon"><ion-icon name="home-outline"></ion-icon></span>
@@ -34,7 +34,7 @@
                 </a>
             </li>
             <li tabindex="0" class="nav__element">
-                <a class="nav__link nav__link--hover">
+                <a href="/panel/redirects.html" class="nav__link nav__link--hover">
                     <div class="nav__link-decor nav__link-decor--top"></div>
                     <div class="nav__link-decor nav__link-decor--bottom"></div>
                     <span class="nav__link-icon"><ion-icon name="link-outline"></ion-icon></span>
@@ -42,7 +42,7 @@
                 </a>
             </li>
             <li tabindex="0" class="nav__element">
-                <a class="nav__link nav__link--hover">
+                <a href="/panel/stats.html" class="nav__link nav__link--hover">
                     <div class="nav__link-decor nav__link-decor--top"></div>
                     <div class="nav__link-decor nav__link-decor--bottom"></div>
                     <span class="nav__link-icon"><ion-icon name="stats-chart-outline"></ion-icon></span>
@@ -50,7 +50,7 @@
                 </a>
             </li>
             <li tabindex="0" class="nav__element">
-                <a class="nav__link nav__link--hover">
+                <a href="/panel/profile.html" class="nav__link nav__link--hover">
                     <div class="nav__link-decor nav__link-decor--top"></div>
                     <div class="nav__link-decor nav__link-decor--bottom"></div>
                     <span class="nav__link-icon"><ion-icon name="person-outline"></ion-icon></span>
@@ -75,40 +75,11 @@
 </div>    <main class="main">
         <div class="wrapper">
             <div class="main__card main__card--main">
-                <h3 class="main__card-header">Create new redirect</h3>
-                <form class="main__form">
-                    <div class="main__input-box">
-                        <label for="url" class="main__input-label">Enter your link</label>
-                        <input type="text" class="main__input" id="url" placeholder="https://http.cat/" required>
-                        <div class="main__custom-box">
-                          <label for="custom-url" class="main__input-label">Custom url http://localhost:3000/</label>
-                          <input type="text" class="main__input" id="custom-url" placeholder="i-love-cats" required>
-                        </div>
-                    </div>
-                    <button class="button main__button copy" type="button">
-                        <span>Shorten</span>
-                    </button>
-                </form>
-                <div class="main__error"></div>
-            </div>
-            <div class="main__card main__card--chart"><canvas id="myChart"></canvas></div>
-            <img src="https://cataas.com/cat?width=500" class="main__card main__card--img"></img>
-
-            <div class="main__card main__card--table">
-                <h3 class="main__card-header">Last 5 created link</h3>
-                <table class="table" id="links">
-                    <thead class="table__head">
-                        <tr class="table__row">
-                            <th class="table__cell">Source</th>
-                            <th class="table__cell">Shortened</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table__body"></tbody>
-                </table>
+                <h3 class="main__card-header">Link list</h3>
             </div>
         </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-    <script src="./dist/js/panel.min.js" defer></script>
+    <script src="/dist/js/panel.min.js" defer></script>
 </body>
 </html>
