@@ -26,8 +26,6 @@ function prepareTableListeners() {
   linkTable.addEventListener('click', copyLink);
 }
 
-
-
 async function getShortenLink(ev) {
   if (button.innerText === 'Wait...') return;
   if (button.innerText === 'Copy' && ev.type === 'click') {
@@ -55,16 +53,6 @@ async function getShortenLink(ev) {
   } catch (error) {
     setError(error);
   }
-}
-
-function copyValue(text, node) {
-  navigator.clipboard.writeText(text);
-  showSuccessCopied(node);
-}
-
-function showSuccessCopied(node) {
-  node.classList.add('copy--copied');
-  setTimeout(() => node.classList.remove('copy--copied'), 1e3);
 }
 
 function clear() {
@@ -239,7 +227,7 @@ function getRow(short, source) {
   const newRow = document.createElement('tr');
   newRow.classList.add('table__row');
   newRow.innerHTML = `<td class="table__cell">${source}</td>
-  <td class="table__cell"><a href="${short}" target="_blank" >${short}</a><button class="button copy">Copy</button></td>
+  <td class="table__cell"><a class="link" href="${short}" target="_blank" >${short}</a><button class="button copy">Copy</button></td>
   `;
 
   return newRow;

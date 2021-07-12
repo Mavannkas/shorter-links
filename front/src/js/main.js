@@ -34,3 +34,13 @@ const sendGet = async (url) => {
 
   return json;
 };
+
+function copyValue(text, node) {
+  navigator.clipboard.writeText(text);
+  showSuccessCopied(node);
+}
+
+function showSuccessCopied(node) {
+  node.classList.add('copy--copied');
+  setTimeout(() => node.classList.remove('copy--copied'), 1e3);
+}

@@ -73,4 +73,27 @@
             }
         }
     }
+
+    .pagination {
+
+        &__row {
+            flex-direction: row;
+        }
+
+        &__cell {
+            width: 30%;
+            margin-bottom: 0;
+            padding-left: 1em;
+            text-align: left;
+            font-size: 1.6rem;
+
+            &--button {
+                width: 15%;
+                
+                .button {
+                    width: 80%;
+                    }
+                }
+            }
+        }
 }

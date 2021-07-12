@@ -401,7 +401,9 @@ a.link {
 .table {
     width: 100%;
     font-size: 1.6rem;
-    table-layout:fixed;
+    table-layout: fixed;
+    border-collapse: collapse;
+
     &__head {
         display: none;
     }
@@ -486,28 +488,19 @@ a.link {
     }
 
     &__cell {
-        // width: 100%;
-        // min-width: 0;
-        // // text-align: left;
-        // text-align: center;
-        // font-size: 1.6rem;
-
-        // flex: 1;
-        // white-space: nowrap;
-        // overflow: hidden;
-        // text-overflow: ellipsis;
         display: block;
         width: 99%;
+        margin-bottom: 1em;
         text-align: center;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        margin-bottom: 1em;
 
         font-size: 1.6rem;
 
         &--button {
             width: 80%;
+            overflow: visible;
 
             .button {
                 width: 100%;
@@ -519,7 +512,7 @@ a.link {
                 &:focus {
                     transform: scale(1.1);
                 }
-                
+
                 &:hover {
                     transform: scale(1.1);
                 }
@@ -528,7 +521,8 @@ a.link {
     }
 
     &__edit {
-        background-color: #2ECC40 ;
+        color: white;
+        background-color: rgb(92, 92, 92);
     }
 
     &__delete {
@@ -551,6 +545,15 @@ a.link {
         text-align: center;
         border-radius: 10px;
         border: 1px solid #bbbbbb;
+    }
+
+    &__next {
+        width: auto;
+        font-size: 2rem;
+        &:hover, &:focus {
+            font-size: 2rem;
+            transform: translateY(0) scale(1.1);
+        }
     }
 }
 
