@@ -526,7 +526,7 @@ a.link {
 
     &__delete {
         color: white;
-        background-color: #c20600 ;
+        background-color: $error_color;
     }
 
 }
@@ -574,11 +574,53 @@ a.link {
 }
 
 .popup {
+    position: relative;
+    width: 80%;
     padding: 2em;
     font-size: 1.6rem;
     border-radius: 10px;
     background-color: $background;
+
+    &__close {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+
+        ion-icon {
+            font-size: 4rem;
+            transition: transform .3s;
+        }
+
+        &:hover {
+            ion-icon {
+                transform: scale(1.2);
+            }
+        }
+    }
     
+    &__header {
+        padding: 1em;
+        text-align: center;
+        font-weight: 200;
+    }
+    
+    &__button {
+        width: 100px;
+        padding: .6em 0;
+        font-size: 1.6rem;
+
+        &--red {
+            color: white;
+            background-color: $error_color;
+        }
+    }
+
+    &__buttons {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
 }
 
 @import './small';
