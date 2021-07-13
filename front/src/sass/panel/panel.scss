@@ -53,12 +53,11 @@ a.link {
     &:hover {
       background-color: $button;
       color: $background;
-      transform: translateY(-5px)
     }
 
     &:focus {
         outline: none;
-        font-size: 2.2rem;
+        transform: scale(1.1);
     }
 }
 
@@ -555,6 +554,31 @@ a.link {
             transform: translateY(0) scale(1.1);
         }
     }
+}
+
+.no-scroll {
+    overflow:hidden;
+}
+
+.popup-shadow {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.363);
+    z-index: 10;
+}
+
+.popup {
+    padding: 2em;
+    font-size: 1.6rem;
+    border-radius: 10px;
+    background-color: $background;
+    
 }
 
 @import './small';

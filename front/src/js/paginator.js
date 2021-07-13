@@ -9,10 +9,9 @@ class PaginatorTemplate {
 
   init() {
     this.initTable();
+    this.initTableListeners();
     this.initIndicator();
     this.initData();
-    // this.initListeners();
-    //add copy, stats, delete, edit
   }
 
   initTable() {
@@ -23,7 +22,50 @@ class PaginatorTemplate {
     this.appendToTarget(table);
   }
 
+  initTableListeners() {
+    this.body.addEventListener('click', this.clickHandler.bind(this));
+  }
+
+  clickHandler(ev) {
+    const closestTr = ev.target.closest('.pagination__row');
+
+    switch (ev.target.dataset.type) {
+      case 'copy':
+        this.copyLink(closestTr);
+        break;
+
+      case 'edit':
+        this.showEditPopup(closestTr);
+        break;
+
+      case 'delete':
+        this.deleteItem(closestTr);
+        break;
+
+      default:
+        this.showStatsPopup(closestTr);
+        break;
+    }
+  }
+
+  copyLink(node) {
+    const button = node.querySelector('.pagination__copy');
+    const text = node.querySelector('a.link').innerText;
+    copyValue(text, button);
+  }
+
+  showEditPopup(node) {}
+
+  deleteItem(node) {}
+
+  showStatsPopup(node) {}
+
   initIndicator() {
+    this.initIndicatorBody();
+    this.initIndicatorListeners();
+  }
+
+  initIndicatorBody() {
     this.indicator = this.generateIndicator();
 
     this.pageInput = this.indicator.querySelector('input');
@@ -46,6 +88,22 @@ class PaginatorTemplate {
     this.target.append(node);
   }
 
+  initIndicatorListeners() {
+    this.nextButton.addEventListener('click', this.nextPage.bind(this));
+    this.pageInput.addEventListener('blur', this.changePage.bind(this));
+    this.pageInput.addEventListener('keypress', this.changePage.bind(this));
+  }
+
+  nextPage() {
+    this.changeData();
+  }
+
+  changePage({ type, key }) {
+    if (key == 'Enter' || type == 'blur') {
+      this.changeData(this.pageInput.value);
+    }
+  }
+
   appendToBody(node) {
     this.body.append(node);
   }
@@ -55,11 +113,15 @@ class PaginatorTemplate {
   }
 
   async initData() {
-    const { page, lastPage, items } = await this.getPage();
+    this.setMaxPageNumber(await this.changeData());
+  }
+
+  async changeData(num) {
+    const { page, lastPage, items } = await this.getPage(num);
 
     this.setPageNumber(page);
-    this.setMaxPageNumber(lastPage);
     this.appendTableItems(items);
+    return lastPage;
   }
 
   async getPage(page) {
@@ -75,6 +137,14 @@ class PaginatorTemplate {
   }
 
   getCurrentPageNumber(num) {
+    if (this.currentPage && this.currentPage == this.maxPageNode.innerText) {
+      return 1;
+    }
+
+    if (+this.maxPageNode.innerText < +num) {
+      return this.currentPage;
+    }
+
     return num ?? (this.currentPage ?? 0) + 1;
   }
 
@@ -88,15 +158,10 @@ class PaginatorTemplate {
   }
 
   appendTableItems(items) {
+    this.clearBody();
     items.forEach((item) => {
       this.appendToBody(this.generateTableRow(item));
     });
-  }
-
-  initIndicatorListeners() {
-    this.nextButton.addEventListener('click', nextPage);
-    this.pageInput.addEventListener('blur', changePage);
-    this.pageInput.addEventListener('keypress', changePage);
   }
 }
 
@@ -123,11 +188,11 @@ class UserPaginator extends PaginatorTemplate {
     tr.innerHTML = `
     <tr class="pagination__row" >
     <td class="pagination__cell">${source}</td>
-    <td class="pagination__cell"><a class="link" href="${redirectLink}">${redirectLink}</a></td>
+    <td class="pagination__cell"><a class="link" target="_blank" rel="noopener noreferrer" href="${redirectLink}">${redirectLink}</a></td>
     <td class="pagination__cell">${dateString}</td>
-    <td class="pagination__cell pagination__cell--button"><button class="pagination__copy button copy">Copy</button></td>
-    <td class="pagination__cell pagination__cell--button"><button class="pagination__edit button">Edit</button></td>
-    <td class="pagination__cell pagination__cell--button"><button class="pagination__delete button">Delete</button></td>
+    <td class="pagination__cell pagination__cell--button"><button data-type="copy" class="pagination__copy button copy">Copy</button></td>
+    <td class="pagination__cell pagination__cell--button"><button data-type="edit" class="pagination__edit button">Edit</button></td>
+    <td class="pagination__cell pagination__cell--button"><button data-type="delete" class="pagination__delete button">Delete</button></td>
     </tr>
     `;
 
