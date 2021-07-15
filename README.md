@@ -6,6 +6,7 @@
 	* SCSS
 	* CSS3
 	* HTML5
+	* TypeScript
 	* JavaScript ES6
   * Chart.js
 
