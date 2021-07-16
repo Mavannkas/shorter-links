@@ -17,6 +17,7 @@ import axios from 'axios';
 import { UpdateRedirectLinkDto } from './dto/update-redirect-link.dto';
 import { User } from 'src/user/entity/user.entity';
 import { ForbiddenRedirectFilter } from 'src/filters/forbidden-redirect.filter';
+import { IsNull, Not } from 'typeorm';
 
 @Injectable()
 export class ShortenService {
@@ -99,10 +100,11 @@ export class ShortenService {
       take: limit,
       where: [
         {
+          id: Not(IsNull()),
           user_id: user.user_id,
         },
       ],
-      order: {  
+      order: {
         created_at: 'DESC',
       },
     });

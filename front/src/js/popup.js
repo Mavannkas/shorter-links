@@ -9,8 +9,8 @@ class PopupTemplate {
     this.addScrollBlock();
     this.popupNode = this.createPopup();
     this.addListeners();
-
     this.appendToBody();
+    document.body.focus();
   }
 
   addScrollBlock() {
@@ -23,8 +23,6 @@ class PopupTemplate {
 
   createPopup() {
     const popup = this.createPopupTemplate();
-    // const body = this.createPopupBody();
-    // popup.querySelector('.popup__body').append(body);
 
     return popup;
   }
@@ -39,22 +37,68 @@ class PopupTemplate {
   }
 
   addListeners() {
-    const [close, ok, cancel] = this.popupNode.querySelectorAll(
-      '.popup__close, button',
-    );
-
-    ok.addEventListener('click', this.callback);
-    ok.addEventListener('click', this.destroyPopup.bind(this));
-    cancel.addEventListener('click', this.destroyPopup.bind(this));
-    close.addEventListener('click', this.destroyPopup.bind(this));
+    this.bodyHandler = this.popupHandle.bind(this);
+    document.body.addEventListener('click', this.bodyHandler, true);
+    document.body.addEventListener('keydown', this.bodyHandler, true);
   }
 
-  destroyPopup() {
-    this.popupNode.remove();
-    this.removeScrollBlock();
+  popupHandle({ target, key }) {
+    if (
+      (target.classList.contains('popup__button') &&
+        !target.classList.contains('popup__button--red')) ||
+      key === 'Enter'
+    ) {
+      this.callback();
+    }
+
+    this.destroyPopup(target, key);
+  }
+
+  destroyPopup(target, key) {
+    if (
+      target.classList.contains('popup-shadow') ||
+      target.classList.contains('popup__button') ||
+      target.classList.contains('hydrated') ||
+      key === 'Escape' ||
+      key === 'Enter'
+    ) {
+      this.popupNode.remove();
+      this.removeScrollBlock();
+      document.body.removeEventListener('click', this.bodyHandler, true);
+      document.body.removeEventListener('keydown', this.bodyHandler, true);
+    }
   }
 
   appendToBody() {
     document.body.append(this.popupNode);
+  }
+}
+
+class Alert extends PopupTemplate {
+  constructor({ title, text }, callback) {
+    super(title, callback);
+    this.text = text;
+
+    this.init();
+  }
+
+  init() {
+    this.setAttention();
+    const body = this.createPopupBody();
+    this.popupNode.querySelector('.popup__body').append(body);
+  }
+
+  setAttention() {
+    this.popupNode
+      .querySelector('.popup__header')
+      .classList.add('popup__header--attention');
+  }
+
+  createPopupBody() {
+    const p = document.createElement('p');
+    p.classList.add('popup__text');
+    p.innerHTML = this.text;
+
+    return p;
   }
 }

@@ -28,6 +28,7 @@ class PaginatorTemplate {
 
   clickHandler(ev) {
     const closestTr = ev.target.closest('.pagination__row');
+    ev.target.blur();
 
     switch (ev.target.dataset.type) {
       case 'copy':
@@ -56,7 +57,29 @@ class PaginatorTemplate {
 
   showEditPopup(node) {}
 
-  deleteItem(node) {}
+  deleteItem(node) {
+    const link = node.querySelector('a').innerText;
+    this.popup = new Alert(
+      {
+        text: `Are you really want to delete this redirection?<br><a class="link" target="_blank" rel="noopener noreferrer" href="${link}">${link}</a>`,
+        title: 'Attention',
+      },
+      () => {
+        this.deleteRedirection.bind(this)(node.dataset.id);
+      },
+    );
+  }
+
+  async deleteRedirection(id) {
+    try {
+      const response = await sendDelete(`main/shorten/${id}`);
+      // showSuccess();
+      this.changeData(this.currentPage);
+    } catch (error) {
+      console.log(error);
+      showError(error);
+    }
+  }
 
   showStatsPopup(node) {}
 
