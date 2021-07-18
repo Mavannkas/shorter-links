@@ -55,7 +55,53 @@ class PaginatorTemplate {
     copyValue(text, button);
   }
 
-  showEditPopup(node) {}
+  showEditPopup(node) {
+    const [sourceNode, urlNode] = node.querySelectorAll('.pagination__cell');
+    const source = sourceNode.innerText;
+    const url = urlNode.innerText.split('/').slice(-1)[0];
+
+    this.popup = new EditModal(
+      {
+        title: `Edit selected link`,
+        source,
+        url,
+      },
+      () => {
+        this.editRedirection.bind(this)(
+          node.dataset.id,
+          this.prepareBody(source, url),
+        );
+      },
+    );
+  }
+
+  prepareBody(source, url) {
+    const links = [...document.querySelectorAll('#source, #url')].map(
+      (link) => link.value,
+    );
+
+    const result = {};
+
+    if (links[0] !== source) {
+      result['source'] = links[0];
+    }
+
+    if (links[1] !== url) {
+      result['customID'] = links[1];
+    }
+
+    return result;
+  }
+
+  async editRedirection(id, body) {
+    try {
+      const response = await sendPatch(`main/shorten/${id}`, body);
+      this.showSuccess('Correctly updated');
+      this.changeData(this.currentPage);
+    } catch (error) {
+      this.showError(error);
+    }
+  }
 
   deleteItem(node) {
     const link = node.querySelector('a').innerText;
@@ -73,11 +119,10 @@ class PaginatorTemplate {
   async deleteRedirection(id) {
     try {
       const response = await sendDelete(`main/shorten/${id}`);
-      // showSuccess();
+      this.showSuccess('Correctly deleted');
       this.changeData(this.currentPage);
     } catch (error) {
-      console.log(error);
-      showError(error);
+      this.showError(error);
     }
   }
 
@@ -185,6 +230,18 @@ class PaginatorTemplate {
     items.forEach((item) => {
       this.appendToBody(this.generateTableRow(item));
     });
+  }
+
+  showSuccess(text) {
+    this.popup = new SuccessAlert(text);
+  }
+
+  showError(response) {
+    if (Array.isArray(response)) {
+      this.popup = new ErrorAlert(response.join('\n'));
+    } else {
+      this.popup = new ErrorAlert(response);
+    }
   }
 }
 

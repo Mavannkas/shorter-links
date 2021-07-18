@@ -579,7 +579,7 @@ a.link {
     padding: 2em;
     font-size: 1.6rem;
     border-radius: 10px;
-    background-color: $background;
+    background-color: #fff;
 
     &__close {
         position: absolute;
@@ -598,18 +598,24 @@ a.link {
             }
         }
     }
-    
+
     &__header {
-        padding: 1em;
+        padding: 0 0 .5em;
         text-align: center;
+        font-size: 2.4rem;
         font-weight: 200;
 
         &--attention {
             font-weight: bold;
             color: $error_color;
         }
+
+        &--success {
+            font-weight: bold;
+            color: green;
+        }
     }
-    
+
     &__button {
         width: 100px;
         padding: .6em 0;
@@ -631,6 +637,29 @@ a.link {
         margin: 1em 0 3em;
         text-align: center;
         line-height: 40px;
+    }
+
+    &__form {
+        padding-bottom: 3em;
+    };
+
+    &__label {
+        display: block;
+        padding: 1em 0 .5em;
+        text-align: center;
+    }
+
+    &__input {
+        display: block;
+        margin: 0 auto;
+        padding: 1em .5em;
+        width: 80%;
+        border: none;
+        border-radius: 10px;
+
+        &.main__input {
+            border-bottom: 3px solid $section;
+        }
     }
 }
 

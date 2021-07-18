@@ -102,3 +102,61 @@ class Alert extends PopupTemplate {
     return p;
   }
 }
+
+class EditModal extends PopupTemplate {
+  constructor({ title, url, source }, callback) {
+    super(title, callback);
+    this.url = url;
+    this.source = source;
+
+    this.init();
+  }
+
+  init() {
+    const body = this.createPopupBody();
+    this.popupNode.querySelector('.popup__body').append(body);
+  }
+
+  createPopupBody() {
+    const form = document.createElement('form');
+    form.classList.add('popup__form');
+    form.innerHTML = `
+    <label class="popup__label" for="source">Enter new source</label>
+    <input class="popup__input main__input" type="text" value="${this.source}" id="source" require>
+    <label class="popup__label" for="url">Enter new custom url</label>
+    <input class="popup__input main__input" type="text" value="${this.url}" id="url" require>
+    `;
+
+    return form;
+  }
+}
+
+class ErrorAlert extends Alert {
+  constructor(text) {
+    super(
+      {
+        title: 'Attention!',
+        text,
+      },
+      () => 1,
+    );
+  }
+}
+
+class SuccessAlert extends Alert {
+  constructor(text) {
+    super(
+      {
+        title: 'Success!',
+        text,
+      },
+      () => 1,
+    );
+  }
+
+  setAttention() {
+    this.popupNode
+      .querySelector('.popup__header')
+      .classList.add('popup__header--success');
+  }
+}
