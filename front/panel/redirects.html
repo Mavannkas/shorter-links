@@ -78,26 +78,16 @@
 </div>    <main class="main">
         <div class="wrapper">
             <div class="main__card main__card--table" id="user_paginator">
-                <h3 class="main__card-header">Link list</h3>
+                <h3 class="main__card-header">Log list</h3>
             </div>
         </div>
     </main>
-<!-- 
-    <div class="popup-shadow">
 
-    </div> -->
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script> -->
     <script>
-        const test = new UserPaginator("#user_paginator", {
+        new UserPaginator("#user_paginator", {
             link: "main/shorten/pages"
         })
-
-        new EditModal({
-            title: "Edit selected link",
-            source: "https://forum.margonem.pl/",
-            url: "3ac81j25g2"
-        },()=>console.log(1))
     </script>
 </body>
 </html>

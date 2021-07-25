@@ -279,3 +279,35 @@ class UserPaginator extends PaginatorTemplate {
     return tr;
   }
 }
+
+class StatsPaginator extends PaginatorTemplate {
+  constructor(...args) {
+    super(...args);
+  }
+
+  generateTable() {
+    const table = document.createElement('table');
+    table.classList.add('pagination');
+
+    table.innerHTML = `<thead class="pagination__head"><tr class="pagination__row"><th class="pagination__cell">IP</th><th class="pagination__cell">Agent</th><th class="pagination__cell">Referrer</th><th class="pagination__cell">Created at</th></tr></thead><tbody class="pagination__body"></tbody>`;
+
+    return table;
+  }
+
+  generateTableRow({ ip, agent, referrer, created_at, redirect_link_id }) {
+    const tr = document.createElement('tr');
+    tr.classList.add('pagination__row');
+    const dateString = new Date(created_at).toLocaleString();
+
+    tr.innerHTML = `
+    <tr class="pagination__row" >
+    <td class="pagination__cell">${ip}</td>
+    <td class="pagination__cell">${agent}</td>
+    <td class="pagination__cell">${referrer}</td>
+    <td class="pagination__cell">${dateString}</td>
+    </tr>
+    `;
+
+    return tr;
+  }
+}
