@@ -1,5 +1,6 @@
 import {
   Controller,
+  DefaultValuePipe,
   Get,
   Param,
   ParseIntPipe,
@@ -18,6 +19,7 @@ import {
   DaysStatsResponse,
   PublicStatsResponse,
   RedirectLinkStatsResponse,
+  RedirectLogPageResponse,
   StatsResponse,
 } from 'src/interfaces/stats';
 import { User } from 'src/user/entity/user.entity';
@@ -40,6 +42,16 @@ export class StatsController {
     @Param('days', new ParseIntPipe()) days: number,
   ): Promise<DaysStatsResponse[]> {
     return this.statsService.getLastDaysStats(user, days);
+  }
+
+  @Get('last/:page/:limit?')
+  @UseGuards(AuthGuard('jwt'))
+  getPage(
+    @Param('page', new ParseIntPipe()) page: number,
+    @Param('limit', new DefaultValuePipe(10), new ParseIntPipe()) limit,
+    @UserObj() user: User,
+  ): Promise<RedirectLogPageResponse> {
+    return this.statsService.getPage(page, limit, user);
   }
 
   @Get('all')

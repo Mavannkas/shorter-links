@@ -1,9 +1,16 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
+import { RedirectItemResponse } from 'src/interfaces/redirect-log';
 
 import {
   DaysStatsResponse,
   PublicStatsResponse,
   RedirectLinkStatsResponse,
+  RedirectLogPageResponse,
   StatsResponse,
 } from 'src/interfaces/stats';
 import { RedirectLink } from 'src/shorten/entity/redirect-link.entity';
@@ -85,6 +92,51 @@ export class StatsService {
       day: item.date,
       redirectCount: item.redirectCount,
     }));
+  }
+
+  async getPage(
+    page: number,
+    limit: number,
+    user: User,
+  ): Promise<RedirectLogPageResponse> {
+    if (page <= 0) throw new BadRequestException('Page must be positive');
+
+    const result = this.getUserLogs(user);
+
+    const selectedLogs = (await result.getRawMany()).splice(
+      limit * (page - 1),
+      limit,
+    );
+
+    const count = await result.getCount();
+
+    const lastPage = Math.ceil(count / limit);
+
+    const items: RedirectItemResponse[] = selectedLogs.map((item) => ({
+      ip: item.redirectLog_ip,
+      agent: item.redirectLog_agent,
+      referrer: item.redirectLog_referrer,
+      created_at: item.redirectLog_created_at,
+    }));
+
+    return {
+      items,
+      page,
+      lastPage,
+    };
+  }
+
+  getUserLogs(user: User) {
+    return getConnection()
+      .createQueryBuilder()
+      .select('redirectLog')
+      .from(RedirectLog, 'redirectLog')
+      .leftJoinAndSelect('redirectLog.redirect_link_id', 'redirect_link_id')
+      .leftJoinAndSelect('redirect_link_id.user_id', 'user_id')
+      .where('user_id.user_id = :id', {
+        id: user.user_id,
+      })
+      .orderBy('redirectLog.created_at');
   }
 
   async getAllStats(): Promise<StatsResponse> {

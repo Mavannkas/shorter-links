@@ -30,5 +30,6 @@ export interface PasswordChangeResponse {
 }
 
 export interface PanelResponse {
+  date?: string;
   subPage: string;
 }

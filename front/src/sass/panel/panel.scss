@@ -43,6 +43,7 @@ a.link {
     height: 40%;
     padding: .5em 1em;
     font-size: 2rem;
+
     border: none;
     border-radius: 20px;
     background: $section;
@@ -183,7 +184,7 @@ a.link {
             opacity: 0;
             background-color: $background;
             pointer-events: none;
-            
+
             &::before {
                 position: absolute;
                 top: 0;
@@ -308,6 +309,32 @@ a.link {
         &--table {
             grid-column: 1/-1;
             padding: 2em;
+        }
+
+        &--created {
+            padding: 2em;
+            text-align: center;
+            font-size: 3rem;
+        }
+        
+        &--delete {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 2em;
+            text-align: center;
+
+            .button {
+                width: auto;
+                height: auto;
+                padding: 1em 3em;
+                font-size: 1.6rem;
+                background-color: $error_color;
+                color: white;
+                text-transform: uppercase;
+
+            }
         }
     }
 

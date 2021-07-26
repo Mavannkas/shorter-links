@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   ParseUUIDPipe,
   Patch,
   Post,
@@ -17,7 +19,7 @@ import { Token } from 'src/auth/entity/token.entity';
 import { TokenObj } from 'src/decorators/token-obj.decorator';
 import { UserObj } from 'src/decorators/user-obj.decorator';
 import { ForbiddenRedirectFilter } from 'src/filters/forbidden-redirect.filter';
-import { TokenResponse } from 'src/interfaces/auth';
+import { TokenPageResponse, TokenResponse } from 'src/interfaces/auth';
 import {
   DeleteSessionResponse,
   DeleteUserResponse,
@@ -68,8 +70,9 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @UseFilters(new ForbiddenRedirectFilter())
   @Render('pages/panel/profile')
-  getProfile(): PanelResponse {
+  getProfile(@UserObj() user: User): PanelResponse {
     return {
+      date: user.created_at.toLocaleDateString(),
       subPage: 'Profile',
     };
   }
@@ -80,14 +83,15 @@ export class UserController {
     return this.userService.deleteUser(user, res);
   }
 
-  @Get('sessions')
+  @Get('sessions/:page/:limit?')
   @UseGuards(AuthGuard('jwt'))
   @UseFilters(new ForbiddenRedirectFilter())
   getSessions(
+    @Param('page', new DefaultValuePipe(10), new ParseIntPipe()) page: number,
     @UserObj() user: User,
     @TokenObj() token: Token,
-  ): Promise<TokenResponse[]> {
-    return this.userService.getSessions(user, token);
+  ): Promise<TokenPageResponse> {
+    return this.userService.getSessions(user, token, page);
   }
 
   @Delete('sessions/:id')

@@ -51,6 +51,7 @@ export class AuthService {
       const user = new User();
 
       const role = await this.rolesService.getRoleByName(UserRole.User);
+      console.log(role);
       user.email = registerData.email;
       user.name = registerData.name;
       user.password_hash = hashPassword(registerData.password);
@@ -58,7 +59,7 @@ export class AuthService {
 
       await this.sendMail(
         user,
-        `http://localhost:3000/main/auth/verify/${user.activation_hash}`,
+        `http://shorten.miensny.ct8.pl/main/auth/verify/${user.activation_hash}`,
       );
 
       await user.save();
@@ -74,7 +75,7 @@ export class AuthService {
     }
   }
 
-  async sendMail({ email, name }, url: string, template = 'activate') {
+  async sendMail({ email, name }, url: string, template = 'activation') {
     await this.mailService.sendMail(
       email,
       {
@@ -127,7 +128,7 @@ export class AuthService {
 
       await this.sendMail(
         user,
-        `http://localhost:3000/main/auth/verify/${user.activation_hash}`,
+        `http://shorten.miensny.ct8.pl/main/auth/verify/${user.activation_hash}`,
       );
 
       await user.save();
@@ -154,7 +155,7 @@ export class AuthService {
       return res
         .cookie('jwt', token.accessToken, {
           secure: false,
-          domain: 'localhost',
+          domain: 'shorten.miensny.ct8.pl',
           httpOnly: true,
         })
         .redirect('/main/user');
@@ -223,7 +224,7 @@ export class AuthService {
       await TokenObj.remove();
       res.clearCookie('jwt', {
         secure: false,
-        domain: 'localhost',
+        domain: 'shorten.miensny.ct8.pl',
         httpOnly: true,
       });
 
@@ -245,7 +246,7 @@ export class AuthService {
 
       await this.sendMail(
         user,
-        `http://localhost:3000/main/auth/change-password/${user.change_password_hash}`,
+        `http://shorten.miensny.ct8.pl/main/auth/change-password/${user.change_password_hash}`,
         'change-password',
       );
 

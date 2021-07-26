@@ -30,6 +30,22 @@ export interface TokenResponse {
   active?: boolean;
 }
 
+export interface TokenItem {
+  token_id: string;
+  created_at: Date;
+  ip: string;
+  agent: string;
+  referrer: string;
+  name: string | null;
+  active?: boolean;
+}
+
+export interface TokenPageResponse {
+  items: TokenItem[];
+  page: number;
+  lastPage: number;
+}
+
 export interface RecoveryPasswordResponse {
   ok: string;
 }

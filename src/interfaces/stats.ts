@@ -1,4 +1,5 @@
 import { RedirectLinkResponse } from './redirect-link';
+import { RedirectItemResponse } from './redirect-log';
 
 export interface StatsResponse {
   redirectCount: number;
@@ -16,4 +17,10 @@ export interface RedirectLinkStatsResponse {
 export interface PublicStatsResponse {
   redirectLinks: number;
   redirects: number;
+}
+
+export interface RedirectLogPageResponse {
+  items: RedirectItemResponse[];
+  page: number;
+  lastPage: number;
 }

@@ -76,6 +76,7 @@ export class RolesService {
   }
 
   async getRoleByName(name: string): Promise<Role> {
+    console.log(name);
     const role = await Role.findOne({
       name,
       deleted: false,

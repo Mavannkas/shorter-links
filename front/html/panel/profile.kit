@@ -20,17 +20,38 @@
     <!-- @include 'panel_nav.kit' -->
     <main class="main">
         <div class="wrapper">
-            <div class="main__card main__card--created"></div>
-            <div class="main__card main__card--delete"><button class="button main__button main__button--red"></button></div>
+            <div class="main__card main__card--created">
+                <h3 class="main__card-header">Registered in</h3>
+                <p class="date">20-20-2021</p>
+            </div>
+            <div class="main__card main__card--delete">
+                <h3 class="main__card-header">Delete account</h3>
+                <button class="button">Delete</button>
+            </div>
             <div class="main__card main__card--table" id="session_paginator">
                 <h3 class="main__card-header">Session list</h3>
             </div>
         </div>
     </main>
     <script>
-        new UserPaginator("#user_paginator", {
-            link: "main/shorten/pages"
+        new SessionPaginator("#session_paginator", {
+            link: "main/user/sessions",
+            limit: 5
         })
+
+        document.querySelector('.main__card--delete > button').addEventListener('click',  ()=>new Alert({
+                text: `Are you really want to delete your account?`,
+                title: 'Attention',
+            },
+            async () => {
+                try {
+                    const response = await sendDelete(`main/user`);
+                    location.reload();
+                } catch (error) {
+                    alert("Deletion failed")
+                }
+            },
+        ));
     </script>
 </body>
 </html>

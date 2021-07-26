@@ -1,7 +1,9 @@
 import { Controller, Get, Param, Render, Req, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 
-@Controller()
+@Controller({
+  host: 'shorten.miensny.ct8.pl',
+})
 export class AppController {
   constructor(private readonly appService: AppService) {}
 

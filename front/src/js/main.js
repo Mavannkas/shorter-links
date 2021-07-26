@@ -1,4 +1,4 @@
-const MAIN_URL = 'http://localhost:3000/';
+const MAIN_URL = 'https://shorten.miensny.ct8.pl/';
 
 const sendPost = async (url, data) => {
   const response = await fetch(

@@ -16,13 +16,7 @@ const main = async () => {
   try {
     await checkData(sourceValue, customValue);
     const response = await postUserData(sourceValue, customValue);
-    const json = await response.json();
-
-    if (!response.ok) {
-      throw json.message;
-    }
-
-    setSuccess(json.redirectLink);
+    setSuccess(response.redirectLink);
   } catch (error) {
     setError(error);
   }

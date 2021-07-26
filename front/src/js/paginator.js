@@ -1,5 +1,6 @@
 class PaginatorTemplate {
   constructor(selector, { link, limit = 10 }) {
+    console.log(selector);
     this.target = document.querySelector(selector);
     this.link = link;
     this.limit = limit;
@@ -267,9 +268,9 @@ class UserPaginator extends PaginatorTemplate {
 
     tr.innerHTML = `
     <tr class="pagination__row" >
-    <td class="pagination__cell">${source}</td>
-    <td class="pagination__cell"><a class="link" target="_blank" rel="noopener noreferrer" href="${redirectLink}">${redirectLink}</a></td>
-    <td class="pagination__cell">${dateString}</td>
+    <td class="pagination__cell" title="${source}">${source}</td>
+    <td class="pagination__cell"><a class="link" target="_blank" rel="noopener noreferrer"  title="${redirectLink}"href="${redirectLink}">${redirectLink}</a></td>
+    <td class="pagination__cell" title="${dateString}">${dateString}</td>
     <td class="pagination__cell pagination__cell--button"><button data-type="copy" class="pagination__copy button copy">Copy</button></td>
     <td class="pagination__cell pagination__cell--button"><button data-type="edit" class="pagination__edit button">Edit</button></td>
     <td class="pagination__cell pagination__cell--button"><button data-type="delete" class="pagination__delete button">Delete</button></td>
@@ -301,13 +302,73 @@ class StatsPaginator extends PaginatorTemplate {
 
     tr.innerHTML = `
     <tr class="pagination__row" >
-    <td class="pagination__cell">${ip}</td>
-    <td class="pagination__cell">${agent}</td>
-    <td class="pagination__cell">${referrer}</td>
-    <td class="pagination__cell">${dateString}</td>
+    <td class="pagination__cell" title="${ip}">${ip}</td>
+    <td class="pagination__cell" title="${agent}">${agent}</td>
+    <td class="pagination__cell" title="${referrer}">${referrer}</td>
+    <td class="pagination__cell" title="${dateString}">${dateString}</td>
     </tr>
     `;
 
     return tr;
+  }
+}
+
+class SessionPaginator extends PaginatorTemplate {
+  constructor(...args) {
+    super(...args);
+  }
+
+  generateTable() {
+    const table = document.createElement('table');
+    table.classList.add('pagination');
+
+    table.innerHTML = `<thead class="pagination__head"><tr class="pagination__row"><th class="pagination__cell">IP</th><th class="pagination__cell">Agent</th><th class="pagination__cell">Referrer</th><th class="pagination__cell">Created at</th><th class="pagination__cell">Your Session</th><th class="pagination__cell pagination__cell--button"></th></tr></thead><tbody class="pagination__body"></tbody>`;
+
+    return table;
+  }
+
+  generateTableRow({ ip, agent, referrer, created_at, active, token_id }) {
+    console.log(ip);
+    const tr = document.createElement('tr');
+    tr.classList.add('pagination__row');
+    tr.dataset.id = token_id;
+    const dateString = new Date(created_at).toLocaleString();
+    const activeText = active ? 'Yes' : 'No';
+
+    tr.innerHTML = `
+    <tr class="pagination__row" >
+    <td class="pagination__cell" title="${ip}">${ip}</td>
+    <td class="pagination__cell" title="${agent}">${agent}</td>
+    <td class="pagination__cell" title="${referrer}">${referrer}</td>
+    <td class="pagination__cell" title="${dateString}">${dateString}</td>
+    <td class="pagination__cell" title="${activeText}">${activeText}</td>
+    <td class="pagination__cell pagination__cell--button"><button data-type="delete" class="pagination__delete button">Delete</button></td>
+    </tr>
+    `;
+
+    return tr;
+  }
+
+  deleteItem(node) {
+    const { id } = node.dataset;
+    this.popup = new Alert(
+      {
+        text: `Are you really want to delete this session?`,
+        title: 'Attention',
+      },
+      () => {
+        this.deleteSession.bind(this)(id);
+      },
+    );
+  }
+
+  async deleteSession(id) {
+    try {
+      const response = await sendDelete(`main/user/sessions/${id}`);
+      this.showSuccess('Correctly deleted');
+      this.changeData(this.currentPage);
+    } catch (error) {
+      this.showError(error);
+    }
   }
 }

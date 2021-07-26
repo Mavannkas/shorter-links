@@ -8,3 +8,10 @@ export interface RedirectLogInterface {
   created_at: Date;
   redirect_link_id: RedirectLink;
 }
+
+export interface RedirectItemResponse {
+  ip: string;
+  agent: string;
+  referrer: string;
+  created_at: Date;
+}

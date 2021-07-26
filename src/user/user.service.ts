@@ -9,7 +9,11 @@ import {
 import { AdminService } from 'src/admin/admin.service';
 import { AuthService } from 'src/auth/auth.service';
 import { Token } from 'src/auth/entity/token.entity';
-import { TokenResponse } from 'src/interfaces/auth';
+import {
+  TokenItem,
+  TokenPageResponse,
+  TokenResponse,
+} from 'src/interfaces/auth';
 import { UserRole } from 'src/interfaces/role';
 import {
   DeleteSessionResponse,
@@ -68,14 +72,40 @@ export class UserService {
     return user;
   }
 
-  async getSessions(user: User, token: Token): Promise<TokenResponse[]> {
+  async getSessions(
+    user: User,
+    token: Token,
+    page: number,
+  ): Promise<TokenPageResponse> {
     const res = (await this.getUserById(user.user_id)).tokens.map(
       this.adminService.prepareTokenResponse,
     );
-    return res.map((item: TokenResponse) => {
-      item.active = item.token_id === token.token_id;
-      return item;
-    });
+
+    const lastPage = Math.ceil(res.length / 5);
+    return {
+      items: res
+        .map((item: TokenResponse) => {
+          item.active = item.token_id === token.token_id;
+          return item;
+        })
+        .map(this.tokenFilter)
+        .splice(5 * (page - 1), 5),
+      lastPage,
+      page,
+    };
+  }
+
+  tokenFilter(token: TokenResponse): TokenItem {
+    const { agent, created_at, ip, name, referrer, active, token_id } = token;
+    return {
+      token_id,
+      agent,
+      created_at,
+      ip,
+      name,
+      referrer,
+      active,
+    };
   }
 
   async deleteUser(user: User, res): Promise<DeleteUserResponse> {
